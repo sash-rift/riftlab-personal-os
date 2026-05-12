@@ -1,5 +1,7 @@
 # [NAME]'s Intelligence System
 
+@agent.md
+
 @about-me/identity.md
 
 @about-me/voice.md
@@ -16,6 +18,7 @@
 
 These pointers tell Claude where to look for context that isn't already loaded. In surfaces that honor `@-imports` (Claude Code), the files above are already in context. In surfaces that don't (Cowork, Chat), Claude reads them on demand when the situation matches the pointer.
 
+- **Agent identity**: `agent.md`. Who I want you to be — your name (if you have one), your role with me, how you should show up. Read this any time the conversation calls for stepping into your persona.
 - **Voice rules**: `about-me/voice.md`. Read before drafting any content in my voice (emails, posts, documents, slides, anything I'll send or publish).
 - **Identity**: `about-me/identity.md`. Reference when answering questions about my role, my work, or my background.
 - **Current focus**: `about-me/current-focus.md`. Pull from it for status updates, planning, or "what's on my plate" questions.

@@ -18,6 +18,7 @@ If git clone works, you have the whole kit at `/tmp/riftlab-personal-os/`. Read 
 
 From the cloned repo (or via WebFetch), you'll read:
 - `templates/CLAUDE.md`
+- `templates/agent.md`
 - `templates/about-me/identity.md`
 - `templates/about-me/voice.md`
 - `templates/about-me/current-focus.md`
@@ -48,9 +49,11 @@ Ask these questions ONE AT A TIME. Wait for the user's answer before asking the 
 2. **Role**: "What's your role and where do you work?"
 3. **Day-to-day**: "Tell me about what you actually do day to day. Two or three sentences."
 4. **Voice**: "How do you write? Direct, reflective, formal, casual? Any patterns you can't stand (em dashes, corporate-speak, fake enthusiasm)?"
-5. **Current focus**: "What are the 2-3 things on your plate right now that I should know about?"
-6. **Tools**: "What tools do you live in? (Calendar, email client, Notion, Slack, etc.) Just list them quickly."
-7. **Install location**: "Where do you want your AI OS to live? This will be a real folder you can open in Finder and edit directly. Suggested paths: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`. Pick one or give me a custom path."
+5. **AI name (optional)**: "Want to give your AI a name? Something personal. Examples: Nuro, Atlas, Sage, Echo, Pilot. Or you can skip and we'll just call it Claude."
+6. **AI behavior**: "How do you want your AI to act with you? Examples: a co-creator who pushes back, a peer who collaborates, an executor who ships fast, a coach who challenges. Use your own words."
+7. **Current focus**: "What are the 2-3 things on your plate right now that I should know about?"
+8. **Tools**: "What tools do you live in? (Calendar, email client, Notion, Slack, etc.) Just list them quickly."
+9. **Install location**: "Where do you want your AI OS to live? This will be a real folder you can open in Finder and edit directly. Suggested paths: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`. Pick one or give me a custom path."
 
 Do not default to `~/.claude/` — that's a hidden config folder and we want the OS to feel like a real owned thing. If the user explicitly says they want `~/.claude/`, respect it, but otherwise nudge toward a visible folder.
 
@@ -72,9 +75,18 @@ Use `templates/about-me/identity.md` as the base. Replace placeholders with what
 
 Use `templates/about-me/voice.md` as the base. Translate their answer to question 4 into specific rules. Include the universal defaults from the template (no em dashes, no hedging, no filler openings). Add their personal preferences on top.
 
+### `agent.md`
+
+Use `templates/agent.md` as the base. Replace `[AGENT_NAME]` with their answer to question 5 (or "Claude" if they skipped). Translate their answer to question 6 into:
+- A one-sentence role description (what kind of AI they want)
+- 3-4 specific behavior traits in the "How you should show up" section
+- 0-2 anti-patterns in the "What I don't want" section (only if they mentioned any explicit dislikes)
+
+If the user gave a vivid description (e.g., "a co-creator who pushes back when I'm being lazy"), use their language directly. Don't sanitize it.
+
 ### `about-me/current-focus.md`
 
-Use `templates/about-me/current-focus.md` as the base. Fill in from their answer to question 5. Date-stamp it with today's date.
+Use `templates/about-me/current-focus.md` as the base. Fill in from their answer to question 7. Date-stamp it with today's date.
 
 ### `rules/writing-style.md`
 
