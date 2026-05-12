@@ -13,17 +13,21 @@ Your AI OS lives in a folder you pick (suggested: `~/intelligence/`, `~/MyAI/`, 
 Inside the OS folder:
 
 - **CLAUDE.md** — top of your AI's mind every session. Knows your role, voice, current focus.
+- **agent.md** — who your AI is to you (name, persona, behavior).
 - **about-me/** — identity, voice rules, current-focus. Makes Claude sound like it knows you.
 - **rules/** — your behavioral defaults (how you want responses formatted, what to avoid).
 - **references/** — empty to start. Domain knowledge you add over time (people, tools, glossary).
-- **skills/** — seven ready-to-use workflows:
-  - `/aim-coach` — refine any prompt or system instruction through coaching
-  - `/daily-brief` — morning brief that adapts to your role and priorities
-  - `/meeting-prep` — strategic brief for any upcoming meeting
-  - `/docx` — create, read, edit Word documents (fetched from Anthropic's open skills repo on install)
-  - `/pdf` — read, manipulate, create PDF files (fetched from Anthropic)
-  - `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
-  - `/internal-comms` — write status reports, newsletters, FAQs, leadership updates (fetched from Anthropic)
+- **projects/** — empty to start. One folder per active initiative.
+
+Skills are installed separately at `~/.claude/skills/` (where Claude looks for them) and as a personal Cowork plugin for the slash menu. Seven ready-to-use workflows ship with the kit:
+
+- `/aim-coach` — refine any prompt or system instruction through coaching
+- `/daily-brief` — morning brief that adapts to your role and priorities
+- `/meeting-prep` — strategic brief for any upcoming meeting
+- `/docx` — create, read, edit Word documents (fetched from Anthropic's open skills repo on install)
+- `/pdf` — read, manipulate, create PDF files (fetched from Anthropic)
+- `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
+- `/internal-comms` — write status reports, newsletters, FAQs, leadership updates (fetched from Anthropic)
 
 ## Install (zero friction)
 
@@ -53,7 +57,7 @@ If you'd rather see what Claude is doing before letting it run, two alternate pa
 
 **Git clone.** If you have git installed and want a local copy: `git clone https://github.com/sash-rift/riftlab-personal-os`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/riftlab-personal-os/."
 
-All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, rules, and seven working skills. CLAUDE.md auto-loads when you launch Claude inside the folder. Skills are available via symlinks into `~/.claude/skills/` for Code/CLI, and via a personal Cowork plugin for Cowork.
+All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, and rules. CLAUDE.md auto-loads when you launch Claude inside the folder. Seven skills are installed at `~/.claude/skills/` for Code/CLI use and packaged into a personal Cowork plugin for Cowork's slash menu.
 
 ## After install
 

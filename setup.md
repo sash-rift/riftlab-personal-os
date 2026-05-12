@@ -100,32 +100,24 @@ Copy `templates/rules/communication.md` as-is.
 
 Create both as empty folders with a `.gitkeep` file. The user populates these over time.
 
-## Step 4: Install skills (into the OS folder, then symlink)
+## Step 4: Install skills
 
-Skills must live at `~/.claude/skills/` for Claude to discover them via `/`. But we want the OS folder (`<OS_PATH>`) to be the user's single source of truth. So copy the skills into `<OS_PATH>/skills/`, then symlink each one into `~/.claude/skills/`.
+Skills live at `~/.claude/skills/` where Claude discovers them automatically. Install directly there — no symlinks. (Skills are infrastructure, not identity files. They don't need to live in the visible OS folder.)
 
-Steps:
+```
+mkdir -p ~/.claude/skills
+cp -r <REPO_PATH>/skills/aim-coach ~/.claude/skills/
+cp -r <REPO_PATH>/skills/daily-brief ~/.claude/skills/
+cp -r <REPO_PATH>/skills/meeting-prep ~/.claude/skills/
+```
 
-1. Copy each skill folder from the repo into `<OS_PATH>/skills/`:
-   - `<OS_PATH>/skills/aim-coach/SKILL.md`
-   - `<OS_PATH>/skills/daily-brief/SKILL.md`
-   - `<OS_PATH>/skills/meeting-prep/SKILL.md`
+Verify each ends up at `~/.claude/skills/<name>/SKILL.md`.
 
-2. For each skill folder, create a symlink in `~/.claude/skills/` pointing to the OS folder copy:
-   ```
-   mkdir -p ~/.claude/skills
-   ln -sfn <OS_PATH>/skills/aim-coach ~/.claude/skills/aim-coach
-   ln -sfn <OS_PATH>/skills/daily-brief ~/.claude/skills/daily-brief
-   ln -sfn <OS_PATH>/skills/meeting-prep ~/.claude/skills/meeting-prep
-   ```
+If any of these already exist at `~/.claude/skills/<name>`, ask before overwriting. Back up first (`~/.claude/skills/<name>.backup-YYYYMMDD`).
 
-3. Verify each symlink resolves to the OS folder copy.
+## Step 4.5: Fetch Anthropic's skills (docx, pdf, pptx, internal-comms)
 
-If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting. If they exist as real folders (not symlinks), offer to back them up first (move to `~/.claude/skills/<name>.backup-YYYYMMDD`).
-
-## Step 4.5: Fetch Anthropic's skills for Code/CLI (docx, pdf, pptx, internal-comms)
-
-Four Anthropic skills round out the kit. `docx`, `pdf`, and `pptx` are bundled with Claude Desktop's Cowork by default, but **Claude Code (CLI and Desktop Code tab) does not ship with them**. So we fetch all four from Anthropic's open skills repo and symlink them into `~/.claude/skills/` for Code/CLI access. `internal-comms` is Apache 2.0; the others are source-available — the user is fetching their own copy from Anthropic, not us redistributing.
+Four Anthropic skills round out the kit. `docx`, `pdf`, and `pptx` are bundled with Claude Desktop's Cowork by default, but **Claude Code (CLI and Desktop Code tab) does not ship with them**. So we fetch all four from Anthropic's open skills repo for Code/CLI access. `internal-comms` is Apache 2.0; the others are source-available — the user is fetching their own copy from Anthropic, not us redistributing.
 
 Steps:
 
@@ -134,21 +126,15 @@ Steps:
    git clone --depth 1 https://github.com/anthropics/skills.git /tmp/anthropic-skills
    ```
 
-2. Copy these four skill folders into `<OS_PATH>/skills/`:
-   - `/tmp/anthropic-skills/skills/docx` → `<OS_PATH>/skills/docx`
-   - `/tmp/anthropic-skills/skills/pdf` → `<OS_PATH>/skills/pdf`
-   - `/tmp/anthropic-skills/skills/pptx` → `<OS_PATH>/skills/pptx`
-   - `/tmp/anthropic-skills/skills/internal-comms` → `<OS_PATH>/skills/internal-comms`
-
-3. Symlink each into `~/.claude/skills/`:
+2. Copy these four skill folders directly into `~/.claude/skills/`:
    ```
-   ln -sfn <OS_PATH>/skills/docx ~/.claude/skills/docx
-   ln -sfn <OS_PATH>/skills/pdf ~/.claude/skills/pdf
-   ln -sfn <OS_PATH>/skills/pptx ~/.claude/skills/pptx
-   ln -sfn <OS_PATH>/skills/internal-comms ~/.claude/skills/internal-comms
+   cp -r /tmp/anthropic-skills/skills/docx ~/.claude/skills/
+   cp -r /tmp/anthropic-skills/skills/pdf ~/.claude/skills/
+   cp -r /tmp/anthropic-skills/skills/pptx ~/.claude/skills/
+   cp -r /tmp/anthropic-skills/skills/internal-comms ~/.claude/skills/
    ```
 
-4. Clean up: `rm -rf /tmp/anthropic-skills`.
+3. Clean up: `rm -rf /tmp/anthropic-skills`.
 
 If `git clone` fails (no internet or git not installed), skip this step and warn the user: "I couldn't fetch Anthropic's document skills (docx, pdf, pptx, internal-comms). Your three core skills (aim-coach, daily-brief, meeting-prep) installed fine. You can re-run setup later or install these manually from https://github.com/anthropics/skills."
 
@@ -168,7 +154,7 @@ Steps:
    - Plugin name: `<user-firstname-lowercase>-os` (e.g., `sash-os`, `maria-os`)
    - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `internal-comms` (4 total)
    - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, internal-comms."
-   - Source: `<OS_PATH>/skills/`
+   - Source: `~/.claude/skills/` (where Steps 4 and 4.5 installed them)
 
 3. Install the resulting `.plugin` file into Cowork. The user should see it appear under Personal plugins.
 
@@ -180,7 +166,7 @@ Tell the user, in plain language:
 
 - Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder anytime to see or edit your files."
 - **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
-- That skill symlinks at `~/.claude/skills/<each>` point to the OS folder for Code/CLI discovery, and the Cowork plugin handles slash-menu visibility in Cowork.
+- Skills are installed at `~/.claude/skills/` for Code/CLI discovery, and packaged as a personal Cowork plugin for Cowork's slash menu.
 - The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine.
 - That this is THEIR OS. Edit any file in the OS folder and Claude picks up the changes. `about-me/current-focus.md` is the one they'll update most often.
 - The curation rule: "Review CLAUDE.md monthly. For each line, ask: would removing it cause Claude to make a mistake? If not, delete it."
@@ -189,9 +175,8 @@ End with one sentence on what's next. Do not pad with congratulations. Match the
 
 ## Edge cases
 
-- **User explicitly wants `~/.claude/` as the install location**: respect it. Install directly there with no skill symlinks needed (everything's already in the discovery path). Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder by default."
-- **User has existing skill folders at `~/.claude/skills/<name>` as real folders (not symlinks)**: ask before replacing. Offer to back them up first.
-- **User is on Windows**: symlinks require Developer Mode enabled or admin rights. If `ln -sfn` fails, fall back to copying files instead and warn the user that edits in the OS folder won't auto-propagate. Suggest they enable Developer Mode for the better experience.
+- **User explicitly wants `~/.claude/` as the install location**: respect it. Install identity files directly there alongside the skills. Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder by default."
+- **User has existing skill folders at `~/.claude/skills/<name>`**: ask before replacing. Offer to back them up first as `~/.claude/skills/<name>.backup-YYYYMMDD`.
 - **User refuses an interview question**: skip it. Generate the file with sensible defaults and note that they can edit it.
 - **User is in a hurry**: offer a "quick install" that asks only for name, role, and install location. Defaults for the rest. They can fill in later.
 
