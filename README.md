@@ -6,7 +6,9 @@ This kit gives you the architecture that effective AI users build for themselves
 
 ## What you'll get
 
-After install, your AI OS will live at `~/.claude/`:
+Your AI OS lives in a folder you pick (suggested: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`). It's a real, visible folder you can open in Finder, edit directly, and version with git if you want. Symlinks from `~/.claude/` make Claude find it automatically in every session.
+
+Inside the OS folder:
 
 - **CLAUDE.md** — top of your AI's mind every session. Knows your role, voice, current focus.
 - **about-me/** — identity, voice rules, current-focus. Makes Claude sound like it knows you.
@@ -31,11 +33,11 @@ Install my personal AI OS using https://github.com/sash-rift/riftlab-personal-os
 
 ### Step 3: Answer the interview.
 
-Claude will ask you about 6-7 questions: your name, role, what you do day to day, your writing voice, current focus, tools you use, and where you want the OS installed (default is `~/.claude/`). Takes about 5 minutes.
+Claude will ask you about 6-7 questions: your name, role, what you do day to day, your writing voice, current focus, tools you use, and where you want the OS folder installed (it'll suggest `~/intelligence/` or similar). Takes about 5 minutes.
 
 ### Step 4: Done.
 
-Open a new Claude session anywhere (Desktop Chat, Cowork, Code, CLI). Type `/` and your skills appear. Your CLAUDE.md is loaded automatically.
+Open a new Claude session anywhere (Desktop Chat, Cowork, Code, CLI). Type `/` and your skills appear. Your CLAUDE.md is loaded automatically. Open your OS folder in Finder and you'll see every file Claude knows about you.
 
 ## Other ways to install
 
@@ -45,7 +47,7 @@ If you'd rather see what Claude is doing before letting it run, two alternate pa
 
 **Git clone.** If you have git installed and want a local copy: `git clone https://github.com/sash-rift/riftlab-personal-os`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/riftlab-personal-os/."
 
-All three paths produce the same result: a fully scaffolded `~/.claude/` with your customized CLAUDE.md, identity files, rules, and three working skills.
+All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, rules, and three working skills. Symlinks from `~/.claude/` make Claude find everything automatically.
 
 ## After install
 

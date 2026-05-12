@@ -50,13 +50,15 @@ Ask these questions ONE AT A TIME. Wait for the user's answer before asking the 
 4. **Voice**: "How do you write? Direct, reflective, formal, casual? Any patterns you can't stand (em dashes, corporate-speak, fake enthusiasm)?"
 5. **Current focus**: "What are the 2-3 things on your plate right now that I should know about?"
 6. **Tools**: "What tools do you live in? (Calendar, email client, Notion, Slack, etc.) Just list them quickly."
-7. **Install location**: "Where do you want your AI OS to live? Default is `~/.claude/`. Say 'default' to keep it, or give me another path."
+7. **Install location**: "Where do you want your AI OS to live? This will be a real folder you can open in Finder and edit directly. Suggested paths: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`. Pick one or give me a custom path."
+
+Do not default to `~/.claude/` — that's a hidden config folder and we want the OS to feel like a real owned thing. If the user explicitly says they want `~/.claude/`, respect it, but otherwise nudge toward a visible folder.
 
 If they give a very short answer to any question, ask one follow-up to get usable detail. Don't interrogate. One follow-up max per question.
 
 ## Step 3: Generate identity files
 
-Using the user's answers, write these files at their chosen install location (default `~/.claude/`):
+Using the user's answers, write these files at their chosen install location (the path from question 7 — referred to below as `<OS_PATH>`, e.g., `~/intelligence/`):
 
 ### `CLAUDE.md`
 
@@ -86,39 +88,59 @@ Copy `templates/rules/communication.md` as-is.
 
 Create both as empty folders with a `.gitkeep` file. The user populates these over time.
 
-## Step 4: Install skills
+## Step 4: Install skills (into the OS folder, then symlink)
 
-Copy each skill folder from the repo's `skills/` directory to `~/.claude/skills/`. Each skill must end up as its own folder containing a `SKILL.md` file.
+Skills must live at `~/.claude/skills/` for Claude to discover them via `/`. But we want the OS folder (`<OS_PATH>`) to be the user's single source of truth. So copy the skills into `<OS_PATH>/skills/`, then symlink each one into `~/.claude/skills/`.
 
-The three skills to install:
-- `~/.claude/skills/aim-coach/SKILL.md`
-- `~/.claude/skills/daily-brief/SKILL.md`
-- `~/.claude/skills/meeting-prep/SKILL.md`
+Steps:
 
-If you cloned the repo via git, use `cp -r /tmp/riftlab-personal-os/skills/<name> ~/.claude/skills/`. If you're using WebFetch, fetch each `SKILL.md` and write it to the corresponding path. The folder structure matters: skills are discovered as `~/.claude/skills/<skill-name>/SKILL.md`.
+1. Copy each skill folder from the repo into `<OS_PATH>/skills/`:
+   - `<OS_PATH>/skills/aim-coach/SKILL.md`
+   - `<OS_PATH>/skills/daily-brief/SKILL.md`
+   - `<OS_PATH>/skills/meeting-prep/SKILL.md`
 
-If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting.
+2. For each skill folder, create a symlink in `~/.claude/skills/` pointing to the OS folder copy:
+   ```
+   mkdir -p ~/.claude/skills
+   ln -sfn <OS_PATH>/skills/aim-coach ~/.claude/skills/aim-coach
+   ln -sfn <OS_PATH>/skills/daily-brief ~/.claude/skills/daily-brief
+   ln -sfn <OS_PATH>/skills/meeting-prep ~/.claude/skills/meeting-prep
+   ```
 
-After installation, verify the files exist at the three paths above.
+3. Verify each symlink resolves to the OS folder copy.
+
+If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting. If they exist as real folders (not symlinks), offer to back them up first (move to `~/.claude/skills/<name>.backup-YYYYMMDD`).
+
+## Step 4.5: Symlink CLAUDE.md so Claude finds it globally
+
+Claude Code reads `~/.claude/CLAUDE.md` as the user-global CLAUDE.md for every session. Symlink it to the OS folder so the user can edit one file and have it apply everywhere.
+
+```
+ln -sfn <OS_PATH>/CLAUDE.md ~/.claude/CLAUDE.md
+```
+
+If `~/.claude/CLAUDE.md` already exists as a real file, ask before overwriting. Offer to back it up first (`~/.claude/CLAUDE.md.backup-YYYYMMDD`).
 
 ## Step 5: Report and orient
 
 Tell the user, in plain language:
 
-- What you created (list the files briefly).
-- That their AI OS is now active and every new Claude session will load it.
+- Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder anytime to see or edit your files."
+- That symlinks make it work everywhere: `~/.claude/CLAUDE.md` and `~/.claude/skills/<each>` point to the OS folder, so Claude finds them automatically in any session.
 - The three skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`. Suggest they try `/aim-coach` first with any prompt they want to refine.
-- That this is THEIR OS. Edit any file. The `about-me/current-focus.md` file is the one they'll update most often.
+- That this is THEIR OS. Edit any file in the OS folder and Claude picks up the changes. `about-me/current-focus.md` is the one they'll update most often.
 - The curation rule: "Review CLAUDE.md monthly. For each line, ask: would removing it cause Claude to make a mistake? If not, delete it."
 
 End with one sentence on what's next. Do not pad with congratulations. Match their voice.
 
 ## Edge cases
 
-- **User wants a custom install location**: respect it. Write files to their path instead of `~/.claude/`. Note that for skills to be auto-discoverable via `/`, they must live at `~/.claude/skills/`. If their custom location is elsewhere, either symlink skills into `~/.claude/skills/` or warn them that skills won't appear via `/`.
-- **User has existing CLAUDE.md at the target path**: ask before overwriting. Offer to back it up first (`CLAUDE.md.backup-YYYYMMDD`).
+- **User explicitly wants `~/.claude/` as the install location**: respect it. Install directly there with no symlinks. Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder by default."
+- **User has existing CLAUDE.md at `~/.claude/CLAUDE.md` as a real file**: ask before overwriting. Offer to back it up first (`~/.claude/CLAUDE.md.backup-YYYYMMDD`).
+- **User has existing skill folders at `~/.claude/skills/<name>` as real folders (not symlinks)**: ask before replacing. Offer to back them up first.
+- **User is on Windows**: symlinks require Developer Mode enabled or admin rights. If `ln -sfn` fails, fall back to copying files instead and warn the user that edits in the OS folder won't auto-propagate. Suggest they enable Developer Mode for the better experience.
 - **User refuses an interview question**: skip it. Generate the file with sensible defaults and note that they can edit it.
-- **User is in a hurry**: offer a "quick install" that uses defaults for everything and asks only for name and role. They can fill in the rest later.
+- **User is in a hurry**: offer a "quick install" that asks only for name, role, and install location. Defaults for the rest. They can fill in later.
 
 ## Voice for the install conversation
 
