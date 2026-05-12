@@ -123,9 +123,9 @@ Steps:
 
 If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting. If they exist as real folders (not symlinks), offer to back them up first (move to `~/.claude/skills/<name>.backup-YYYYMMDD`).
 
-## Step 4.5: Fetch Anthropic's skills (docx, pdf, pptx, internal-comms)
+## Step 4.5: Fetch Anthropic's skills for Code/CLI (docx, pdf, pptx, internal-comms)
 
-Four high-value skills come from Anthropic's open skills repo. They're not vendored in this kit (`docx`, `pdf`, and `pptx` are source-available, not redistributable; `internal-comms` is Apache 2.0 but we keep them all together for consistency). Setup fetches them on install so the user gets a fresh copy directly from Anthropic.
+Four Anthropic skills round out the kit. `docx`, `pdf`, and `pptx` are bundled with Claude Desktop's Cowork by default, but **Claude Code (CLI and Desktop Code tab) does not ship with them**. So we fetch all four from Anthropic's open skills repo and symlink them into `~/.claude/skills/` for Code/CLI access. `internal-comms` is Apache 2.0; the others are source-available — the user is fetching their own copy from Anthropic, not us redistributing.
 
 Steps:
 
@@ -154,7 +154,27 @@ If `git clone` fails (no internet or git not installed), skip this step and warn
 
 If any of the four already exist at `~/.claude/skills/<name>`, ask before overwriting, same as Step 4.
 
-## Step 4.6: Symlink CLAUDE.md so Claude finds it globally
+## Step 4.6: Package skills as a Cowork plugin (for Cowork's slash menu)
+
+This step only runs when you (Claude) are inside Claude Desktop's Cowork mode. Cowork has its own plugin loader separate from `~/.claude/skills/` — skills installed via Steps 4 and 4.5 are visible in Code/CLI but not in Cowork's `/` autocomplete. To fix that, package the user's skills into a personal Cowork plugin.
+
+Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default — don't include them in the plugin. Only the 3 RiftLab skills and `internal-comms` need to be packaged.
+
+Steps:
+
+1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 4 RiftLab/internal-comms skills from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
+
+2. Run `create-cowork-plugin` with these inputs:
+   - Plugin name: `<user-firstname-lowercase>-os` (e.g., `sash-os`, `maria-os`)
+   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `internal-comms` (4 total)
+   - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, internal-comms."
+   - Source: `<OS_PATH>/skills/`
+
+3. Install the resulting `.plugin` file into Cowork. The user should see it appear under Personal plugins.
+
+4. Verify in Cowork: type `/` and check that all 7 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
+
+## Step 4.7: Symlink CLAUDE.md so Claude finds it globally
 
 Claude Code reads `~/.claude/CLAUDE.md` as the user-global CLAUDE.md for every session. Symlink it to the OS folder so the user can edit one file and have it apply everywhere.
 
