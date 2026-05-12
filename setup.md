@@ -174,22 +174,13 @@ Steps:
 
 4. Verify in Cowork: type `/` and check that all 7 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
 
-## Step 4.7: Symlink CLAUDE.md so Claude finds it globally
-
-Claude Code reads `~/.claude/CLAUDE.md` as the user-global CLAUDE.md for every session. Symlink it to the OS folder so the user can edit one file and have it apply everywhere.
-
-```
-ln -sfn <OS_PATH>/CLAUDE.md ~/.claude/CLAUDE.md
-```
-
-If `~/.claude/CLAUDE.md` already exists as a real file, ask before overwriting. Offer to back it up first (`~/.claude/CLAUDE.md.backup-YYYYMMDD`).
-
 ## Step 5: Report and orient
 
 Tell the user, in plain language:
 
 - Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder anytime to see or edit your files."
-- That symlinks make it work everywhere: `~/.claude/CLAUDE.md` and `~/.claude/skills/<each>` point to the OS folder, so Claude finds them automatically in any session.
+- **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
+- That skill symlinks at `~/.claude/skills/<each>` point to the OS folder for Code/CLI discovery, and the Cowork plugin handles slash-menu visibility in Cowork.
 - The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine.
 - That this is THEIR OS. Edit any file in the OS folder and Claude picks up the changes. `about-me/current-focus.md` is the one they'll update most often.
 - The curation rule: "Review CLAUDE.md monthly. For each line, ask: would removing it cause Claude to make a mistake? If not, delete it."
@@ -198,8 +189,7 @@ End with one sentence on what's next. Do not pad with congratulations. Match the
 
 ## Edge cases
 
-- **User explicitly wants `~/.claude/` as the install location**: respect it. Install directly there with no symlinks. Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder by default."
-- **User has existing CLAUDE.md at `~/.claude/CLAUDE.md` as a real file**: ask before overwriting. Offer to back it up first (`~/.claude/CLAUDE.md.backup-YYYYMMDD`).
+- **User explicitly wants `~/.claude/` as the install location**: respect it. Install directly there with no skill symlinks needed (everything's already in the discovery path). Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder by default."
 - **User has existing skill folders at `~/.claude/skills/<name>` as real folders (not symlinks)**: ask before replacing. Offer to back them up first.
 - **User is on Windows**: symlinks require Developer Mode enabled or admin rights. If `ln -sfn` fails, fall back to copying files instead and warn the user that edits in the OS folder won't auto-propagate. Suggest they enable Developer Mode for the better experience.
 - **User refuses an interview question**: skip it. Generate the file with sensible defaults and note that they can edit it.
