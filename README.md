@@ -1,59 +1,59 @@
 # Intelligence Starter Kit
 
-A personal AI operating system you can install in 5 minutes by handing this repo to Claude.
+A personal AI operating system you can install in 5 minutes by pasting one prompt into Claude.
 
-This kit gives you the architecture that the most effective AI users build for themselves: a place for your identity, your voice, your rules, your projects, and your skills. Once installed, every Claude session you start (Desktop, Cowork, or Code) knows who you are and what you care about.
+This kit gives you the architecture that effective AI users build for themselves: a place for your identity, your voice, your rules, your projects, and your skills. Once installed, every Claude session you start (Desktop, Cowork, or Code) knows who you are and what you care about.
 
 ## What you'll get
 
 After install, your AI OS will live at `~/.claude/`:
 
-- **CLAUDE.md** — the top of your AI's mind every session. Knows your role, voice, current focus.
-- **about-me/** — identity, voice rules, current-focus. The files that make Claude sound like it knows you.
+- **CLAUDE.md** — top of your AI's mind every session. Knows your role, voice, current focus.
+- **about-me/** — identity, voice rules, current-focus. Makes Claude sound like it knows you.
 - **rules/** — your behavioral defaults (how you want responses formatted, what to avoid).
-- **references/** — domain knowledge (people, tools, glossary) loaded when relevant.
+- **references/** — empty to start. Domain knowledge you add over time (people, tools, glossary).
 - **skills/** — three ready-to-use workflows:
-  - `aim-coach` — refine any prompt or system instruction through coaching
-  - `daily-brief` — morning brief that adapts to your role and priorities
-  - `meeting-prep` — strategic brief for any upcoming meeting
+  - `/aim-coach` — refine any prompt or system instruction through coaching
+  - `/daily-brief` — morning brief that adapts to your role and priorities
+  - `/meeting-prep` — strategic brief for any upcoming meeting
 
-## How to install
+## Install (zero friction)
 
-You have three paths. All three work. Pick whichever surface you live in.
+You need **Claude Desktop's Code tab or Cowork mode** (or Claude Code CLI). The install will not work in plain claude.ai Chat because Chat cannot write files to your computer.
 
-### Path 1: Claude Desktop (Code tab or Cowork)
+### Step 1: Open Claude Desktop's Code tab or Cowork mode.
 
-1. Open Claude Desktop.
-2. Start a new session in the **Code** tab or **Cowork** mode.
-3. Paste this prompt:
+### Step 2: Paste this prompt:
 
 ```
-Clone https://github.com/[YOUR-GITHUB-HANDLE]/intelligence-starter and follow the setup recipe in setup.md to install my personal AI OS.
+Install my personal AI OS using https://github.com/[OWNER]/intelligence-starter — follow setup.md.
 ```
 
-4. Answer the interview questions Claude asks.
-5. Done. Your OS is installed at `~/.claude/`. Skills appear when you type `/`.
+### Step 3: Answer the interview.
 
-### Path 2: Claude Code (CLI)
+Claude will ask you about 6-7 questions: your name, role, what you do day to day, your writing voice, current focus, tools you use, and where you want the OS installed (default is `~/.claude/`). Takes about 5 minutes.
 
-```bash
-git clone https://github.com/[YOUR-GITHUB-HANDLE]/intelligence-starter ~/Downloads/intelligence-starter
-cd ~/Downloads/intelligence-starter
-claude
-> Follow the setup recipe in setup.md to install my personal AI OS.
-```
+### Step 4: Done.
 
-### Path 3: Manual
+Open a new Claude session anywhere (Desktop Chat, Cowork, Code, CLI). Type `/` and your skills appear. Your CLAUDE.md is loaded automatically.
 
-If you'd rather see what's happening before letting Claude do it: open `setup.md`. The whole recipe is human-readable. You can run the steps yourself.
+## Other ways to install
+
+If you'd rather see what Claude is doing before letting it run, two alternate paths:
+
+**Manual ZIP download.** Click the green "Code" button on this repo's GitHub page → "Download ZIP". Unzip somewhere. Then in Claude Desktop tell it: "Follow the setup.md recipe in /Users/me/Downloads/intelligence-starter-main/."
+
+**Git clone.** If you have git installed and want a local copy: `git clone https://github.com/[OWNER]/intelligence-starter`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/intelligence-starter/."
+
+All three paths produce the same result: a fully scaffolded `~/.claude/` with your customized CLAUDE.md, identity files, rules, and three working skills.
 
 ## After install
 
-Your AI OS is yours. Edit any file, add new skills, evolve the rules as you learn what works. The system grows with you.
+Your AI OS is yours. Edit any file. Add new skills (use `/aim-coach` to help you write them). Update `about-me/current-focus.md` whenever your priorities shift. The system grows with you.
 
 Three things to try first:
 
-1. `/aim-coach` — give it a prompt you've been struggling with. Let it refine.
+1. `/aim-coach` — give it a prompt you've been struggling with. Let it coach you.
 2. `/daily-brief` — run it tomorrow morning before opening email.
 3. `/meeting-prep` — point it at your next meeting on the calendar.
 

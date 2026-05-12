@@ -2,6 +2,33 @@
 
 You are setting up a personal AI Operating System for a new user. This is a conversational install. Follow the steps in order. Do not skip steps. Do not run them all at once.
 
+## Step 0: Sanity check your environment
+
+Before greeting the user, verify two things silently:
+
+1. **Filesystem write access.** Can you write a file to the user's home directory? (Most Claude Desktop Code/Cowork sessions and Claude Code CLI can. Plain claude.ai Chat cannot.) If you cannot write files locally, tell the user: "This install needs to write files to your computer. Open Claude Desktop's Code tab or Cowork mode, or use Claude Code in your terminal, then paste the same prompt there." Stop.
+
+2. **The repo is reachable.** Try to access this repo. Use the simplest method available in this session:
+   - **Preferred**: `git clone https://github.com/[OWNER]/intelligence-starter /tmp/intelligence-starter` (works wherever git is installed, no GitHub account needed for public repos).
+   - **Fallback**: WebFetch the raw files individually from `https://raw.githubusercontent.com/[OWNER]/intelligence-starter/main/<path>` as you need them.
+
+If git clone works, you have the whole kit at `/tmp/intelligence-starter/`. Read files from there. If only WebFetch works, fetch each file just-in-time when this recipe references it.
+
+## Step 0.5: Files you will need
+
+From the cloned repo (or via WebFetch), you'll read:
+- `templates/CLAUDE.md`
+- `templates/about-me/identity.md`
+- `templates/about-me/voice.md`
+- `templates/about-me/current-focus.md`
+- `templates/rules/writing-style.md`
+- `templates/rules/communication.md`
+- `skills/aim-coach/SKILL.md`
+- `skills/daily-brief/SKILL.md`
+- `skills/meeting-prep/SKILL.md`
+
+You'll write customized versions of the templates and exact copies of the skills to the user's chosen install location (default `~/.claude/`).
+
 ## Step 1: Greet and orient
 
 Tell the user, in your own words and matching their energy:
@@ -61,14 +88,18 @@ Create both as empty folders with a `.gitkeep` file. The user populates these ov
 
 ## Step 4: Install skills
 
-Copy the entire `skills/` folder from this repo to `~/.claude/skills/`. Each skill is a folder containing `SKILL.md`.
+Copy each skill folder from the repo's `skills/` directory to `~/.claude/skills/`. Each skill must end up as its own folder containing a `SKILL.md` file.
 
-After copying, check that the skills will be discoverable:
+The three skills to install:
 - `~/.claude/skills/aim-coach/SKILL.md`
 - `~/.claude/skills/daily-brief/SKILL.md`
 - `~/.claude/skills/meeting-prep/SKILL.md`
 
+If you cloned the repo via git, use `cp -r /tmp/intelligence-starter/skills/<name> ~/.claude/skills/`. If you're using WebFetch, fetch each `SKILL.md` and write it to the corresponding path. The folder structure matters: skills are discovered as `~/.claude/skills/<skill-name>/SKILL.md`.
+
 If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting.
+
+After installation, verify the files exist at the three paths above.
 
 ## Step 5: Report and orient
 
