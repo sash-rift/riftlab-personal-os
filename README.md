@@ -14,10 +14,14 @@ Inside the OS folder:
 - **about-me/** — identity, voice rules, current-focus. Makes Claude sound like it knows you.
 - **rules/** — your behavioral defaults (how you want responses formatted, what to avoid).
 - **references/** — empty to start. Domain knowledge you add over time (people, tools, glossary).
-- **skills/** — three ready-to-use workflows:
+- **skills/** — seven ready-to-use workflows:
   - `/aim-coach` — refine any prompt or system instruction through coaching
   - `/daily-brief` — morning brief that adapts to your role and priorities
   - `/meeting-prep` — strategic brief for any upcoming meeting
+  - `/docx` — create, read, edit Word documents (fetched from Anthropic's open skills repo on install)
+  - `/pdf` — read, manipulate, create PDF files (fetched from Anthropic)
+  - `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
+  - `/internal-comms` — write status reports, newsletters, FAQs, leadership updates (fetched from Anthropic)
 
 ## Install (zero friction)
 

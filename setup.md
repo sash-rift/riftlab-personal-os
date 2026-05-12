@@ -123,7 +123,38 @@ Steps:
 
 If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting. If they exist as real folders (not symlinks), offer to back them up first (move to `~/.claude/skills/<name>.backup-YYYYMMDD`).
 
-## Step 4.5: Symlink CLAUDE.md so Claude finds it globally
+## Step 4.5: Fetch Anthropic's skills (docx, pdf, pptx, internal-comms)
+
+Four high-value skills come from Anthropic's open skills repo. They're not vendored in this kit (`docx`, `pdf`, and `pptx` are source-available, not redistributable; `internal-comms` is Apache 2.0 but we keep them all together for consistency). Setup fetches them on install so the user gets a fresh copy directly from Anthropic.
+
+Steps:
+
+1. Clone Anthropic's skills repo to a temp location:
+   ```
+   git clone --depth 1 https://github.com/anthropics/skills.git /tmp/anthropic-skills
+   ```
+
+2. Copy these four skill folders into `<OS_PATH>/skills/`:
+   - `/tmp/anthropic-skills/skills/docx` → `<OS_PATH>/skills/docx`
+   - `/tmp/anthropic-skills/skills/pdf` → `<OS_PATH>/skills/pdf`
+   - `/tmp/anthropic-skills/skills/pptx` → `<OS_PATH>/skills/pptx`
+   - `/tmp/anthropic-skills/skills/internal-comms` → `<OS_PATH>/skills/internal-comms`
+
+3. Symlink each into `~/.claude/skills/`:
+   ```
+   ln -sfn <OS_PATH>/skills/docx ~/.claude/skills/docx
+   ln -sfn <OS_PATH>/skills/pdf ~/.claude/skills/pdf
+   ln -sfn <OS_PATH>/skills/pptx ~/.claude/skills/pptx
+   ln -sfn <OS_PATH>/skills/internal-comms ~/.claude/skills/internal-comms
+   ```
+
+4. Clean up: `rm -rf /tmp/anthropic-skills`.
+
+If `git clone` fails (no internet or git not installed), skip this step and warn the user: "I couldn't fetch Anthropic's document skills (docx, pdf, pptx, internal-comms). Your three core skills (aim-coach, daily-brief, meeting-prep) installed fine. You can re-run setup later or install these manually from https://github.com/anthropics/skills."
+
+If any of the four already exist at `~/.claude/skills/<name>`, ask before overwriting, same as Step 4.
+
+## Step 4.6: Symlink CLAUDE.md so Claude finds it globally
 
 Claude Code reads `~/.claude/CLAUDE.md` as the user-global CLAUDE.md for every session. Symlink it to the OS folder so the user can edit one file and have it apply everywhere.
 
@@ -139,7 +170,7 @@ Tell the user, in plain language:
 
 - Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder anytime to see or edit your files."
 - That symlinks make it work everywhere: `~/.claude/CLAUDE.md` and `~/.claude/skills/<each>` point to the OS folder, so Claude finds them automatically in any session.
-- The three skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`. Suggest they try `/aim-coach` first with any prompt they want to refine.
+- The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine.
 - That this is THEIR OS. Edit any file in the OS folder and Claude picks up the changes. `about-me/current-focus.md` is the one they'll update most often.
 - The curation rule: "Review CLAUDE.md monthly. For each line, ask: would removing it cause Claude to make a mistake? If not, delete it."
 
