@@ -9,10 +9,10 @@ Before greeting the user, verify two things silently:
 1. **Filesystem write access.** Can you write a file to the user's home directory? (Most Claude Desktop Code/Cowork sessions and Claude Code CLI can. Plain claude.ai Chat cannot.) If you cannot write files locally, tell the user: "This install needs to write files to your computer. Open Claude Desktop's Code tab or Cowork mode, or use Claude Code in your terminal, then paste the same prompt there." Stop.
 
 2. **The repo is reachable.** Try to access this repo. Use the simplest method available in this session:
-   - **Preferred**: `git clone https://github.com/[OWNER]/intelligence-starter /tmp/intelligence-starter` (works wherever git is installed, no GitHub account needed for public repos).
-   - **Fallback**: WebFetch the raw files individually from `https://raw.githubusercontent.com/[OWNER]/intelligence-starter/main/<path>` as you need them.
+   - **Preferred**: `git clone https://github.com/sash-rift/riftlab-personal-os /tmp/riftlab-personal-os` (works wherever git is installed, no GitHub account needed for public repos).
+   - **Fallback**: WebFetch the raw files individually from `https://raw.githubusercontent.com/sash-rift/riftlab-personal-os/main/<path>` as you need them.
 
-If git clone works, you have the whole kit at `/tmp/intelligence-starter/`. Read files from there. If only WebFetch works, fetch each file just-in-time when this recipe references it.
+If git clone works, you have the whole kit at `/tmp/riftlab-personal-os/`. Read files from there. If only WebFetch works, fetch each file just-in-time when this recipe references it.
 
 ## Step 0.5: Files you will need
 
@@ -95,7 +95,7 @@ The three skills to install:
 - `~/.claude/skills/daily-brief/SKILL.md`
 - `~/.claude/skills/meeting-prep/SKILL.md`
 
-If you cloned the repo via git, use `cp -r /tmp/intelligence-starter/skills/<name> ~/.claude/skills/`. If you're using WebFetch, fetch each `SKILL.md` and write it to the corresponding path. The folder structure matters: skills are discovered as `~/.claude/skills/<skill-name>/SKILL.md`.
+If you cloned the repo via git, use `cp -r /tmp/riftlab-personal-os/skills/<name> ~/.claude/skills/`. If you're using WebFetch, fetch each `SKILL.md` and write it to the corresponding path. The folder structure matters: skills are discovered as `~/.claude/skills/<skill-name>/SKILL.md`.
 
 If the user already has skills at `~/.claude/skills/` with these names, ask before overwriting.
 

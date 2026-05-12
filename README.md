@@ -1,4 +1,4 @@
-# Intelligence Starter Kit
+# RiftLab Personal OS
 
 A personal AI operating system you can install in 5 minutes by pasting one prompt into Claude.
 
@@ -26,7 +26,7 @@ You need **Claude Desktop's Code tab or Cowork mode** (or Claude Code CLI). The 
 ### Step 2: Paste this prompt:
 
 ```
-Install my personal AI OS using https://github.com/[OWNER]/intelligence-starter — follow setup.md.
+Install my personal AI OS using https://github.com/sash-rift/riftlab-personal-os — follow setup.md.
 ```
 
 ### Step 3: Answer the interview.
@@ -41,9 +41,9 @@ Open a new Claude session anywhere (Desktop Chat, Cowork, Code, CLI). Type `/` a
 
 If you'd rather see what Claude is doing before letting it run, two alternate paths:
 
-**Manual ZIP download.** Click the green "Code" button on this repo's GitHub page → "Download ZIP". Unzip somewhere. Then in Claude Desktop tell it: "Follow the setup.md recipe in /Users/me/Downloads/intelligence-starter-main/."
+**Manual ZIP download.** Click the green "Code" button on this repo's GitHub page → "Download ZIP". Unzip somewhere. Then in Claude Desktop tell it: "Follow the setup.md recipe in /Users/me/Downloads/riftlab-personal-os-main/."
 
-**Git clone.** If you have git installed and want a local copy: `git clone https://github.com/[OWNER]/intelligence-starter`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/intelligence-starter/."
+**Git clone.** If you have git installed and want a local copy: `git clone https://github.com/sash-rift/riftlab-personal-os`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/riftlab-personal-os/."
 
 All three paths produce the same result: a fully scaffolded `~/.claude/` with your customized CLAUDE.md, identity files, rules, and three working skills.
 
