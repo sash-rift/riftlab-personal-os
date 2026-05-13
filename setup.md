@@ -141,7 +141,7 @@ Steps:
 
 3. Clean up: `rm -rf /tmp/anthropic-skills`.
 
-If `git clone` fails (no internet or git not installed), skip this step and warn the user: "I couldn't fetch Anthropic's document skills (docx, pdf, pptx, internal-comms). Your three core skills (aim-coach, daily-brief, meeting-prep) installed fine. You can re-run setup later or install these manually from https://github.com/anthropics/skills."
+If `git clone` fails (no internet or git not installed), skip this step and warn the user: "I couldn't fetch Anthropic's document skills (docx, pdf, pptx, internal-comms). Your four core skills (aim-coach, daily-brief, meeting-prep, humanize) installed fine. You can re-run setup later or install these manually from https://github.com/anthropics/skills."
 
 If any of the four already exist at `~/.claude/skills/<name>`, ask before overwriting, same as Step 4.
 
@@ -174,13 +174,13 @@ Steps:
 
 2. Run `create-cowork-plugin` with these inputs:
    - Plugin name: `<user-firstname-lowercase>-os` (e.g., `sash-os`, `maria-os`)
-   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `internal-comms` (4 total)
-   - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, internal-comms."
+   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `humanize`, `internal-comms` (5 total)
+   - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, humanize, internal-comms."
    - Source: `~/.claude/skills/` (where Steps 4 and 4.5 installed them)
 
 3. Install the resulting `.plugin` file into Cowork. The user should see it appear under Personal plugins.
 
-4. Verify in Cowork: type `/` and check that all 7 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
+4. Verify in Cowork: type `/` and check that all 8 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
 
 ## Step 5: Report and orient
 
