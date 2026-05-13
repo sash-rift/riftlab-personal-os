@@ -29,6 +29,12 @@ Skills are installed separately at `~/.claude/skills/` (where Claude looks for t
 - `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
 - `/internal-comms` — write status reports, newsletters, FAQs, leadership updates (fetched from Anthropic)
 
+Three sub-agents install at `~/.claude/agents/` for direct `@-mention` invocation in Claude Code:
+
+- `@agent-researcher` — applies CRAAP source evaluation and triangulation, returns findings with citations and confidence ratings. Operates on a strict token budget.
+- `@agent-critical-thinker` — stress-tests ideas, plans, and theses using named frameworks (pre-mortem, inversion, second-order, steel-manning, base rates, opportunity cost, 5 Whys).
+- `@agent-coach` — Socratic coaching via the GROW model (Goal, Reality, Options, Will). Asks questions; doesn't give answers.
+
 ## Install (zero friction)
 
 You need **Claude Desktop's Code tab or Cowork mode** (or Claude Code CLI). The install will not work in plain claude.ai Chat because Chat cannot write files to your computer.

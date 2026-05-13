@@ -27,6 +27,9 @@ From the cloned repo (or via WebFetch), you'll read:
 - `skills/aim-coach/SKILL.md`
 - `skills/daily-brief/SKILL.md`
 - `skills/meeting-prep/SKILL.md`
+- `agents/researcher.md`
+- `agents/critical-thinker.md`
+- `agents/coach.md`
 
 You'll write customized versions of the templates and exact copies of the skills to the user's chosen install location (default `~/.claude/`).
 
@@ -140,6 +143,23 @@ If `git clone` fails (no internet or git not installed), skip this step and warn
 
 If any of the four already exist at `~/.claude/skills/<name>`, ask before overwriting, same as Step 4.
 
+## Step 4.55: Install agents
+
+Three sub-agents ship with the kit (researcher, critical-thinker, coach). Install them at `~/.claude/agents/` where Claude Code discovers them for `@-mention` invocation.
+
+```
+mkdir -p ~/.claude/agents
+cp <REPO_PATH>/agents/researcher.md ~/.claude/agents/
+cp <REPO_PATH>/agents/critical-thinker.md ~/.claude/agents/
+cp <REPO_PATH>/agents/coach.md ~/.claude/agents/
+```
+
+Verify each lands at `~/.claude/agents/<name>.md`.
+
+If any of these already exist at `~/.claude/agents/<name>.md`, ask before overwriting. Back up first (`~/.claude/agents/<name>.md.backup-YYYYMMDD`).
+
+Note: agent direct-invocation via `@agent-<name>` works in Claude Code (CLI + Desktop Code tab). In Cowork, agents are invoked autonomously by the orchestrator — students can say "use the critical thinker to stress-test this" and Cowork routes.
+
 ## Step 4.6: Package skills as a Cowork plugin (for Cowork's slash menu)
 
 This step only runs when you (Claude) are inside Claude Desktop's Cowork mode. Cowork has its own plugin loader separate from `~/.claude/skills/` — skills installed via Steps 4 and 4.5 are visible in Code/CLI but not in Cowork's `/` autocomplete. To fix that, package the user's skills into a personal Cowork plugin.
@@ -168,6 +188,7 @@ Tell the user, in plain language:
 - **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
 - Skills are installed at `~/.claude/skills/` for Code/CLI discovery, and packaged as a personal Cowork plugin for Cowork's slash menu.
 - The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine.
+- The agents available: `@agent-researcher`, `@agent-critical-thinker`, `@agent-coach`. Suggest they try `@agent-critical-thinker` first on any plan or idea they want stress-tested.
 - That this is THEIR OS. Edit any file in the OS folder and Claude picks up the changes. `about-me/current-focus.md` is the one they'll update most often.
 - The curation rule: "Review CLAUDE.md monthly. For each line, ask: would removing it cause Claude to make a mistake? If not, delete it."
 
