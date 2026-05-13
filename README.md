@@ -24,6 +24,7 @@ Skills are installed separately at `~/.claude/skills/` (where Claude looks for t
 - `/aim-coach` — refine any prompt or system instruction through coaching
 - `/daily-brief` — morning brief that adapts to your role and priorities
 - `/meeting-prep` — strategic brief for any upcoming meeting
+- `/humanize` — rewrite AI-generated or AI-influenced text to remove tells and match your voice
 - `/docx` — create, read, edit Word documents (fetched from Anthropic's open skills repo on install)
 - `/pdf` — read, manipulate, create PDF files (fetched from Anthropic)
 - `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
