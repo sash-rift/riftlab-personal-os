@@ -19,7 +19,7 @@ Inside the OS folder:
 - **references/** — empty to start. Domain knowledge you add over time (people, tools, glossary).
 - **projects/** — empty to start. One folder per active initiative.
 
-Skills are installed separately at `~/.claude/skills/` (where Claude looks for them) and as a personal Cowork plugin for the slash menu. Seven ready-to-use workflows ship with the kit:
+Skills are installed separately at `~/.claude/skills/` (where Claude looks for them) and as a personal Cowork plugin for the slash menu. Eight ready-to-use workflows ship with the kit:
 
 - `/aim-coach` — refine any prompt or system instruction through coaching
 - `/daily-brief` — morning brief that adapts to your role and priorities
@@ -50,7 +50,7 @@ Install my personal AI OS using https://github.com/sash-rift/riftlab-personal-os
 
 ### Step 3: Answer the interview.
 
-Claude will ask you about 6-7 questions: your name, role, what you do day to day, your writing voice, current focus, tools you use, and where you want the OS folder installed (it'll suggest `~/intelligence/` or similar). Takes about 5 minutes.
+Claude will ask you 9 short questions: your name, role, what you do day to day, your writing voice, what you want to name your AI (optional), how you want it to behave, current focus, tools you use, and where you want the OS folder installed (it'll suggest `~/intelligence/` or similar). Takes about 5 minutes.
 
 ### Step 4: Done.
 
@@ -64,17 +64,18 @@ If you'd rather see what Claude is doing before letting it run, two alternate pa
 
 **Git clone.** If you have git installed and want a local copy: `git clone https://github.com/sash-rift/riftlab-personal-os`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/riftlab-personal-os/."
 
-All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, and rules. CLAUDE.md auto-loads when you launch Claude inside the folder. Seven skills are installed at `~/.claude/skills/` for Code/CLI use and packaged into a personal Cowork plugin for Cowork's slash menu.
+All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, and rules. CLAUDE.md auto-loads when you launch Claude inside the folder. Eight skills are installed at `~/.claude/skills/` for Code/CLI use and packaged into a personal Cowork plugin for Cowork's slash menu. Three agents install at `~/.claude/agents/` for direct `@-mention` invocation.
 
 ## After install
 
 Your AI OS is yours. Edit any file. Add new skills (use `/aim-coach` to help you write them). Update `about-me/current-focus.md` whenever your priorities shift. The system grows with you.
 
-Three things to try first:
+Four things to try first:
 
 1. `/aim-coach` — give it a prompt you've been struggling with. Let it coach you.
 2. `/daily-brief` — run it tomorrow morning before opening email.
 3. `/meeting-prep` — point it at your next meeting on the calendar.
+4. `@agent-critical-thinker` — paste a plan or thesis you want stress-tested.
 
 ## What this is not
 
