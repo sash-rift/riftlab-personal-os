@@ -106,7 +106,7 @@ Create both as empty folders with a `.gitkeep` file. The user populates these ov
 
 ## Step 4: Install skills
 
-Skills live at `~/.claude/skills/` where Claude discovers them automatically. Install directly there — no symlinks. (Skills are infrastructure, not identity files. They don't need to live in the visible OS folder.)
+Skills live at `~/.claude/skills/` where Claude discovers them automatically. Install directly there, no symlinks. (Skills are infrastructure, not identity files. They don't need to live in the visible OS folder.)
 
 ```
 mkdir -p ~/.claude/skills
@@ -119,6 +119,8 @@ cp -r <REPO_PATH>/skills/humanize ~/.claude/skills/
 Verify each ends up at `~/.claude/skills/<name>/SKILL.md`.
 
 If any of these already exist at `~/.claude/skills/<name>`, ask before overwriting. Back up first (`~/.claude/skills/<name>.backup-YYYYMMDD`).
+
+**If you're in Cowork and hit a permission prompt writing to `~/.claude/`**: this is normal. Cowork sometimes asks for confirmation when writing into the hidden `.claude` folder. Tell the user plainly: "Cowork is asking permission to write to your hidden Claude config folder. Approve it so I can install the skills there." Then proceed. Do not abandon the step or fall back to alternate locations. Do not try to bypass it with osascript or symlink tricks.
 
 ## Step 4.5: Fetch Anthropic's skills (docx, pdf, pptx, internal-comms)
 
@@ -166,11 +168,11 @@ Note: agent direct-invocation via `@agent-<name>` works in Claude Code (CLI + De
 
 This step only runs when you (Claude) are inside Claude Desktop's Cowork mode. Cowork has its own plugin loader separate from `~/.claude/skills/` — skills installed via Steps 4 and 4.5 are visible in Code/CLI but not in Cowork's `/` autocomplete. To fix that, package the user's skills into a personal Cowork plugin.
 
-Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default — don't include them in the plugin. Only the 3 RiftLab skills and `internal-comms` need to be packaged.
+Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default, so don't include them in the plugin. Only the 4 RiftLab skills (`aim-coach`, `daily-brief`, `meeting-prep`, `humanize`) and `internal-comms` need to be packaged (5 total).
 
 Steps:
 
-1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 4 RiftLab/internal-comms skills from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
+1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 5 RiftLab + internal-comms skills from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
 
 2. Run `create-cowork-plugin` with these inputs:
    - Plugin name: `<user-firstname-lowercase>-os` (e.g., `sash-os`, `maria-os`)
