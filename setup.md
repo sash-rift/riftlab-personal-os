@@ -192,7 +192,11 @@ Tell the user, in plain language:
 - **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
 - Skills are installed at `~/.claude/skills/` for Code/CLI discovery, and packaged as a personal Cowork plugin for Cowork's slash menu.
 - The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine, or `/humanize` on any draft that reads as AI-generated.
-- The agents available: `@agent-researcher`, `@agent-critical-thinker`, `@agent-coach`. Suggest they try `@agent-critical-thinker` first on any plan or idea they want stress-tested.
+- The agents available, and **when to reach for which** (this framing matters — surface it clearly):
+  - `@agent-researcher` — when you're stuck on **information**. You don't know something and you need verified findings with citations. Applies CRAAP and triangulation, hard token budget.
+  - `@agent-critical-thinker` — when you're stuck on an **opinion or plan**. You have a position and want it stress-tested before you commit. Uses pre-mortem, inversion, second-order thinking, steel-manning, base rates, opportunity cost, 5 Whys.
+  - `@agent-coach` — when you're stuck on a **decision**. You've been circling a choice and can't land it. Walks you through GROW (Goal, Reality, Options, Will) one question at a time. Asks, doesn't tell.
+  - Suggest they try `@agent-critical-thinker` first on any plan or idea they want stress-tested.
 - That this is THEIR OS. Edit any file in the OS folder and Claude picks up the changes. `about-me/current-focus.md` is the one they'll update most often.
 - The curation rule: "Review CLAUDE.md monthly. For each line, ask: would removing it cause Claude to make a mistake? If not, delete it."
 

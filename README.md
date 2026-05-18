@@ -30,11 +30,11 @@ Skills are installed separately at `~/.claude/skills/` (where Claude looks for t
 - `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
 - `/internal-comms` — write status reports, newsletters, FAQs, leadership updates (fetched from Anthropic)
 
-Three sub-agents install at `~/.claude/agents/` for direct `@-mention` invocation in Claude Code:
+Three sub-agents install at `~/.claude/agents/` for direct `@-mention` invocation in Claude Code. Each one is for a different kind of stuck:
 
-- `@agent-researcher` — applies CRAAP source evaluation and triangulation, returns findings with citations and confidence ratings. Operates on a strict token budget.
-- `@agent-critical-thinker` — stress-tests ideas, plans, and theses using named frameworks (pre-mortem, inversion, second-order, steel-manning, base rates, opportunity cost, 5 Whys).
-- `@agent-coach` — Socratic coaching via the GROW model (Goal, Reality, Options, Will). Asks questions; doesn't give answers.
+- `@agent-researcher` — stuck on **information**. You don't know something and need verified findings with citations. Applies CRAAP source evaluation and triangulation. Operates on a strict token budget.
+- `@agent-critical-thinker` — stuck on an **opinion or plan**. You have a position and want it stress-tested before you commit. Uses pre-mortem, inversion, second-order, steel-manning, base rates, opportunity cost, 5 Whys.
+- `@agent-coach` — stuck on a **decision**. You've been circling a choice and can't land it. Walks you through GROW (Goal, Reality, Options, Will) one question at a time. Asks, doesn't tell.
 
 ## Install (zero friction)
 
