@@ -4,6 +4,31 @@ A personal AI operating system you can install in 5 minutes by pasting one promp
 
 This kit gives you the architecture that effective AI users build for themselves: a place for your identity, your voice, your rules, your projects, and your skills. Once installed, every Claude session you start (Desktop, Cowork, or Code) knows who you are and what you care about.
 
+## The stack
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  YOUR AI OS                                                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  IDENTITY    CLAUDE.md, agent.md, about-me/, rules/         │
+│              who you are                                    │
+│                                                             │
+│  SKILLS      /aim-coach, /daily-brief, /meeting-prep,       │
+│              /humanize, /docx, /pdf, /pptx, /internal-comms │
+│              what your AI can do for you                    │
+│                                                             │
+│  AGENTS      @researcher        stuck on information?       │
+│              @critical-thinker  stuck on a plan?            │
+│              @coach             stuck on a decision?        │
+│              thinking partners for different kinds of stuck │
+│                                                             │
+│  WORK        projects/, references/                         │
+│              where your stuff lives                         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ## What you'll get
 
 Your AI OS lives in a folder you pick (suggested: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`). It's a real, visible folder you can open in Finder, edit directly, and version with git if you want.
@@ -32,9 +57,9 @@ Skills are installed separately at `~/.claude/skills/` (where Claude looks for t
 
 Three sub-agents install at `~/.claude/agents/` for direct `@-mention` invocation in Claude Code. Each one is for a different kind of stuck:
 
-- `@agent-researcher` — stuck on **information**. You don't know something and need verified findings with citations. Applies CRAAP source evaluation and triangulation. Operates on a strict token budget.
-- `@agent-critical-thinker` — stuck on an **opinion or plan**. You have a position and want it stress-tested before you commit. Uses pre-mortem, inversion, second-order, steel-manning, base rates, opportunity cost, 5 Whys.
-- `@agent-coach` — stuck on a **decision**. You've been circling a choice and can't land it. Walks you through GROW (Goal, Reality, Options, Will) one question at a time. Asks, doesn't tell.
+- `@agent-researcher` — **Stuck on information?** You don't know something and need verified findings with citations. Applies CRAAP source evaluation and triangulation. Operates on a strict token budget.
+- `@agent-critical-thinker` — **Stuck on an opinion or plan?** You have a position and want it stress-tested before you commit. Uses pre-mortem, inversion, second-order, steel-manning, base rates, opportunity cost, 5 Whys.
+- `@agent-coach` — **Stuck on a decision?** You've been circling a choice and can't land it. Walks you through GROW (Goal, Reality, Options, Will) one question at a time. Asks, doesn't tell.
 
 ## Install (zero friction)
 
