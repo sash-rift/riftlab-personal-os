@@ -1,4 +1,4 @@
-# RiftLab Personal OS
+# RiftLab Personal Claude OS
 
 A personal AI operating system you can install in 5 minutes by pasting one prompt into Claude.
 
