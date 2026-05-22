@@ -57,15 +57,64 @@ Ask these questions ONE AT A TIME. Wait for the user's answer before asking the 
 6. **AI behavior**: "How do you want your AI to act with you? Examples: a co-creator who pushes back, a peer who collaborates, an executor who ships fast, a coach who challenges. Use your own words."
 7. **Current focus**: "What are the 2-3 things on your plate right now that I should know about?"
 8. **Tools**: "What tools do you live in? (Calendar, email client, Notion, Slack, etc.) Just list them quickly."
-9. **Install location**: "Where do you want your AI OS to live? This will be a real folder you can open in Finder and edit directly. Suggested paths: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`. Pick one or give me a custom path."
+9. **Install location**: "Where do you want your AI OS to live? This will be a real folder you can open in Finder (Mac) or File Explorer (Windows) and edit directly. Suggested paths: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`. Pick one or give me a custom path."
 
 Do not default to `~/.claude/` — that's a hidden config folder and we want the OS to feel like a real owned thing. If the user explicitly says they want `~/.claude/`, respect it, but otherwise nudge toward a visible folder.
 
 If they give a very short answer to any question, ask one follow-up to get usable detail. Don't interrogate. One follow-up max per question.
 
+## Step 2.5: Check for existing identity files
+
+Before generating any files in Step 3, check what's already at the user's chosen install location. Students often arrive with a `CLAUDE.md` they wrote themselves or inherited from another tutorial — silently overwriting it would lose their work.
+
+For each file Step 3 will write, do this check:
+
+- `<OS_PATH>/CLAUDE.md`
+- `<OS_PATH>/agent.md`
+- `<OS_PATH>/about-me/identity.md`
+- `<OS_PATH>/about-me/voice.md`
+- `<OS_PATH>/about-me/current-focus.md`
+- `<OS_PATH>/rules/writing-style.md`
+- `<OS_PATH>/rules/communication.md`
+
+For each path:
+
+1. **Check existence.** If the file does not exist, skip — Step 3 will create it fresh.
+
+2. **Read it. Triage what's in it:**
+   - **Empty or scaffold-only** (no real user content — just placeholder template text, the Anthropic Claude Code quickstart default, an LL2-style draft with `[YOUR ROLE HERE]` markers): treat as safe to replace. Tell the user briefly: "I found an empty/default `<filename>` — I'll back it up and generate a fresh one." Back up first (rename to `<filename>.backup-YYYYMMDD-HHMMSS`), then let Step 3 proceed.
+   - **Has real user content** (custom projects named, specific voice rules they wrote, actual context that's clearly theirs): pause and ask. Do not auto-decide.
+
+3. **If real content, show the user:**
+   - The file path
+   - The first 15-20 lines as a preview
+   - Three options, in this order:
+
+     **1) Merge (recommended).** I'll read your file, pull out anything specific to you (your projects, your voice rules, custom context), and weave it into the generated file alongside what we covered in the interview. Your original gets backed up first as `<filename>.backup-YYYYMMDD-HHMMSS`.
+
+     **2) Replace.** Back up your file as `<filename>.backup-YYYYMMDD-HHMMSS`, then generate fresh based only on our interview. Your original content is preserved on disk but won't carry into the new file.
+
+     **3) Keep yours.** Leave your file untouched. I won't generate this one in Step 3. You can integrate manually later.
+
+4. **Apply the chosen action:**
+   - **Merge:** Read the user's file. Extract unique signal — anything that's clearly user-written and not template scaffold (project names, real voice rules, specific context). Pass that into Step 3 for the matching file. Step 3 weaves it into the appropriate sections alongside interview content. Back up the original first.
+   - **Replace:** Back up the original, then let Step 3 generate fresh.
+   - **Skip:** Mark this file path as "skip in Step 3." Move on to the next file.
+
+5. **Always back up before any destructive change.** Backup format: `<filename>.backup-YYYYMMDD-HHMMSS` in the same directory. Same for files under `about-me/` and `rules/` — back up in their respective subdirectories, not at `<OS_PATH>` root.
+
+Apply this check file-by-file. A user may have a `CLAUDE.md` but no `agent.md` — only prompt for files that actually exist.
+
+Also note for folders:
+
+- `<OS_PATH>/about-me/` and `<OS_PATH>/rules/` directories: additive. Create if missing, leave existing alone. Per-file checks above handle their contents.
+- `<OS_PATH>/references/` and `<OS_PATH>/projects/`: additive. Step 3 only creates them with `.gitkeep` if they don't already exist; never touches existing contents.
+
 ## Step 3: Generate identity files
 
-Using the user's answers, write these files at their chosen install location (the path from question 7 — referred to below as `<OS_PATH>`, e.g., `~/intelligence/`):
+Using the user's answers, write these files at their chosen install location (the path from question 7 — referred to below as `<OS_PATH>`, e.g., `~/intelligence/`).
+
+**Honor Step 2.5's decisions for each file.** If a file was marked "skip," do not write it. If marked "merge," weave the extracted signal from the existing file into the appropriate sections of the generated file alongside interview content. If marked "replace" (or the file didn't exist), generate normally.
 
 ### `CLAUDE.md`
 
@@ -188,7 +237,7 @@ Steps:
 
 Tell the user, in plain language:
 
-- Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder anytime to see or edit your files."
+- Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder (Mac) or File Explorer (Windows) anytime to see or edit your files."
 - **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
 - Skills are installed at `~/.claude/skills/` for Code/CLI discovery, and packaged as a personal Cowork plugin for Cowork's slash menu.
 - The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine, or `/humanize` on any draft that reads as AI-generated.
@@ -204,7 +253,7 @@ End with one sentence on what's next. Do not pad with congratulations. Match the
 
 ## Edge cases
 
-- **User explicitly wants `~/.claude/` as the install location**: respect it. Install identity files directly there alongside the skills. Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder by default."
+- **User explicitly wants `~/.claude/` as the install location**: respect it. Install identity files directly there alongside the skills. Note the trade-off in your report: "Your OS lives in a hidden config folder. You can still edit the files, but they won't show up in Finder (Mac) or File Explorer (Windows) by default."
 - **User has existing skill folders at `~/.claude/skills/<name>`**: ask before replacing. Offer to back them up first as `~/.claude/skills/<name>.backup-YYYYMMDD`.
 - **User refuses an interview question**: skip it. Generate the file with sensible defaults and note that they can edit it.
 - **User is in a hurry**: offer a "quick install" that asks only for name, role, and install location. Defaults for the rest. They can fill in later.

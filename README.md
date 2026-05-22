@@ -31,7 +31,7 @@ This kit gives you the architecture that effective AI users build for themselves
 
 ## What you'll get
 
-Your AI OS lives in a folder you pick (suggested: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`). It's a real, visible folder you can open in Finder, edit directly, and version with git if you want.
+Your AI OS lives in a folder you pick (suggested: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`). It's a real, visible folder you can open in Finder (Mac) or File Explorer (Windows), edit directly, and version with git if you want.
 
 **The home-folder pattern**: always launch Claude from inside your OS folder (or "Work in this project" in Cowork). Your CLAUDE.md auto-loads from there. If you launch Claude outside the folder, it won't know you. Treat the OS folder as your AI's home base.
 
@@ -79,7 +79,7 @@ Claude will ask you 9 short questions: your name, role, what you do day to day, 
 
 ### Step 4: Done.
 
-Open a Claude session inside your OS folder (Cowork "Work in this project," Code launched from the folder, or CLI). Type `/` and your skills appear. Your CLAUDE.md loads automatically from the folder. Open your OS folder in Finder and you'll see every file Claude knows about you.
+Open a Claude session inside your OS folder (Cowork "Work in this project," Code launched from the folder, or CLI). Type `/` and your skills appear. Your CLAUDE.md loads automatically from the folder. Open your OS folder in Finder (Mac) or File Explorer (Windows) and you'll see every file Claude knows about you.
 
 ## Other ways to install
 
