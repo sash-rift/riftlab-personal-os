@@ -28,9 +28,13 @@ From the cloned repo (or via WebFetch), you'll read:
 - `skills/daily-brief/SKILL.md`
 - `skills/meeting-prep/SKILL.md`
 - `skills/humanize/SKILL.md`
+- `skills/deep-research/` (SKILL.md + the `framework/` reference files)
+- `skills/decision-council/` (SKILL.md + `decision-council-plan.md`)
 - `agents/researcher.md`
 - `agents/critical-thinker.md`
 - `agents/coach.md`
+- `agents/oracle.md`, `agents/hermes.md`, `agents/athena.md`, `agents/scribe.md` (the `deep-research` agent team)
+- `agents/cmo-advisor.md`, `agents/cfo-advisor.md`, `agents/coo-advisor.md`, `agents/gc-advisor.md` (the `decision-council` advisor board)
 
 You'll write customized versions of the templates and exact copies of the skills to the user's chosen install location (default `~/.claude/`).
 
@@ -163,9 +167,11 @@ cp -r <REPO_PATH>/skills/aim-coach ~/.claude/skills/
 cp -r <REPO_PATH>/skills/daily-brief ~/.claude/skills/
 cp -r <REPO_PATH>/skills/meeting-prep ~/.claude/skills/
 cp -r <REPO_PATH>/skills/humanize ~/.claude/skills/
+cp -r <REPO_PATH>/skills/deep-research ~/.claude/skills/
+cp -r <REPO_PATH>/skills/decision-council ~/.claude/skills/
 ```
 
-Verify each ends up at `~/.claude/skills/<name>/SKILL.md`.
+Verify each ends up at `~/.claude/skills/<name>/SKILL.md`. `deep-research` and `decision-council` carry sub-folders (`deep-research/framework/`, `decision-council/decision-council-plan.md`) — `cp -r` brings them along; confirm they arrived, the skills read from them at runtime.
 
 If any of these already exist at `~/.claude/skills/<name>`, ask before overwriting. Back up first (`~/.claude/skills/<name>.backup-YYYYMMDD`).
 
@@ -198,16 +204,30 @@ If any of the four already exist at `~/.claude/skills/<name>`, ask before overwr
 
 ## Step 4.55: Install agents
 
-Three sub-agents ship with the kit (researcher, critical-thinker, coach). Install them at `~/.claude/agents/` where Claude Code discovers them for `@-mention` invocation.
+The kit ships two kinds of agents, both installed at `~/.claude/agents/` where Claude Code discovers them.
+
+- **Three thinking-partner agents** (researcher, critical-thinker, coach) — invoked directly by the user via `@-mention`. One for each kind of stuck.
+- **Eight skill-internal agents** (oracle, hermes, athena, scribe for `deep-research`; cmo-, cfo-, coo-, gc-advisor for `decision-council`) — orchestrated automatically by their parent skill, not meant for direct `@-mention`. They must be installed for those two skills to run.
 
 ```
 mkdir -p ~/.claude/agents
+# thinking partners (@-mention)
 cp <REPO_PATH>/agents/researcher.md ~/.claude/agents/
 cp <REPO_PATH>/agents/critical-thinker.md ~/.claude/agents/
 cp <REPO_PATH>/agents/coach.md ~/.claude/agents/
+# deep-research team
+cp <REPO_PATH>/agents/oracle.md ~/.claude/agents/
+cp <REPO_PATH>/agents/hermes.md ~/.claude/agents/
+cp <REPO_PATH>/agents/athena.md ~/.claude/agents/
+cp <REPO_PATH>/agents/scribe.md ~/.claude/agents/
+# decision-council board
+cp <REPO_PATH>/agents/cmo-advisor.md ~/.claude/agents/
+cp <REPO_PATH>/agents/cfo-advisor.md ~/.claude/agents/
+cp <REPO_PATH>/agents/coo-advisor.md ~/.claude/agents/
+cp <REPO_PATH>/agents/gc-advisor.md ~/.claude/agents/
 ```
 
-Verify each lands at `~/.claude/agents/<name>.md`.
+Verify each lands at `~/.claude/agents/<name>.md` (11 total).
 
 If any of these already exist at `~/.claude/agents/<name>.md`, ask before overwriting. Back up first (`~/.claude/agents/<name>.md.backup-YYYYMMDD`).
 
@@ -217,21 +237,23 @@ Note: agent direct-invocation via `@agent-<name>` works in Claude Code (CLI + De
 
 This step only runs when you (Claude) are inside Claude Desktop's Cowork mode. Cowork has its own plugin loader separate from `~/.claude/skills/` — skills installed via Steps 4 and 4.5 are visible in Code/CLI but not in Cowork's `/` autocomplete. To fix that, package the user's skills into a personal Cowork plugin.
 
-Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default, so don't include them in the plugin. Only the 4 RiftLab skills (`aim-coach`, `daily-brief`, `meeting-prep`, `humanize`) and `internal-comms` need to be packaged (5 total).
+Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default, so don't include them in the plugin. Only the 6 RiftLab skills (`aim-coach`, `daily-brief`, `meeting-prep`, `humanize`, `deep-research`, `decision-council`) and `internal-comms` need to be packaged (7 total).
+
+`deep-research` and `decision-council` orchestrate sub-agents and run most reliably in Claude Code (CLI or Desktop Code tab), where `@-agents` are available. Package them so they appear in Cowork's slash menu too — Cowork routes their sub-agents autonomously — but if a student is doing serious multi-agent work, point them to the Code tab.
 
 Steps:
 
-1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 5 RiftLab + internal-comms skills from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
+1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 6 RiftLab + internal-comms skills from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
 
 2. Run `create-cowork-plugin` with these inputs:
    - Plugin name: `<user-firstname-lowercase>-os` (e.g., `sash-os`, `maria-os`)
-   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `humanize`, `internal-comms` (5 total)
-   - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, humanize, internal-comms."
+   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `humanize`, `deep-research`, `decision-council`, `internal-comms` (7 total)
+   - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, humanize, deep-research, decision-council, internal-comms."
    - Source: `~/.claude/skills/` (where Steps 4 and 4.5 installed them)
 
 3. Install the resulting `.plugin` file into Cowork. The user should see it appear under Personal plugins.
 
-4. Verify in Cowork: type `/` and check that all 8 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
+4. Verify in Cowork: type `/` and check that all 10 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/deep-research`, `/decision-council`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
 
 ## Step 5: Report and orient
 
@@ -240,7 +262,8 @@ Tell the user, in plain language:
 - Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder (Mac) or File Explorer (Windows) anytime to see or edit your files."
 - **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
 - Skills are installed at `~/.claude/skills/` for Code/CLI discovery, and packaged as a personal Cowork plugin for Cowork's slash menu.
-- The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine, or `/humanize` on any draft that reads as AI-generated.
+- The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/deep-research`, `/decision-council` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine, or `/humanize` on any draft that reads as AI-generated.
+- **The two orchestration skills** are the heavy hitters: `/deep-research` runs a four-agent research team (plan → search → evaluate → synthesize) that returns verified, cited findings; `/decision-council` convenes a board of advisors (CMO, CFO, COO, GC) to pressure-test a real decision and hand back one recommendation with an owner. They install their own agent teams and run best in Claude Code (CLI or Desktop Code tab). Tell the user to reach for these when the stakes justify the horsepower — not for quick lookups.
 - The agents available, framed as the kind of stuck each one solves (this framing matters, surface it clearly):
   - `@agent-researcher` — **Stuck on information?** You don't know something and you need verified findings with citations. Applies CRAAP and triangulation, hard token budget.
   - `@agent-critical-thinker` — **Stuck on an opinion or plan?** You have a position and want it stress-tested before you commit. Uses pre-mortem, inversion, second-order thinking, steel-manning, base rates, opportunity cost, 5 Whys.
