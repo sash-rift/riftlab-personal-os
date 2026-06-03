@@ -3,7 +3,7 @@
 
   <!-- Step 1: install prompt -->
   <rect x="330" y="30" width="620" height="62" fill="#151515" stroke="#FFAE00" stroke-width="2"/>
-  <text x="640" y="69" fill="#FFAE00" font-size="22" text-anchor="middle">Paste one prompt  &#8594;  5-minute interview</text>
+  <text x="640" y="69" fill="#FFAE00" font-size="22" text-anchor="middle">Paste one prompt  &#8594;  guided setup</text>
 
   <!-- connector to OS -->
   <line x1="640" y1="92" x2="640" y2="138" stroke="#5E5E5E" stroke-width="2.5"/>
