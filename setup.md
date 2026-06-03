@@ -314,6 +314,36 @@ Steps:
 
 4. Verify in Cowork: type `/` and check that the 8 Cowork-safe skills show up (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/internal-comms`, plus the bundled `/docx`, `/pdf`, `/pptx`). `/deep-research` and `/decision-council` should NOT appear here — that's intended; they live in the Code tab.
 
+## Step 4.7: Final verification — gate before you report
+
+Run this before Step 5. **Do not tell the user the install succeeded until every applicable box is confirmed.** If something fails, fix it (re-run the step, or switch to your file-writing tools) before reporting. Check files at the OS-appropriate paths from Step 3.9.
+
+**Identity files (at `<OS_PATH>`):**
+- [ ] `CLAUDE.md` exists (plus any file not marked "skip" in Step 2.5)
+- [ ] `agent.md`, `about-me/{identity,voice,current-focus}.md`, `rules/{writing-style,communication}.md` present
+- [ ] `references/` and `projects/` exist
+
+**Skills (in the skills dir — 10 total):**
+- [ ] `aim-coach`, `daily-brief`, `meeting-prep`, `humanize` each have a `SKILL.md`
+- [ ] `deep-research/SKILL.md` **and** `deep-research/framework/` (4 files) present
+- [ ] `decision-council/SKILL.md` **and** `decision-council/decision-council-plan.md` present
+- [ ] `docx`, `pdf`, `pptx`, `internal-comms` present — or explicitly noted as skipped if the Anthropic fetch failed
+
+**Agents (in the agents dir — 11 total):**
+- [ ] `researcher`, `critical-thinker`, `coach`
+- [ ] `oracle`, `hermes`, `athena`, `scribe`
+- [ ] `cmo-advisor`, `cfo-advisor`, `coo-advisor`, `gc-advisor`
+
+**Cowork menu (only if you packaged the plugin in Step 4.6):**
+- [ ] Typing `/` in Cowork shows the 8 Cowork-safe skills
+- [ ] `/deep-research` and `/decision-council` do **not** appear in Cowork — this is intended, not a failure
+
+**Light smoke test (recommended):**
+- [ ] From inside `<OS_PATH>`, launching Claude auto-loads `CLAUDE.md` (it greets the user by name/role)
+- [ ] In the Code tab / CLI, `/` lists the skills and an `@agent-` name resolves
+
+**Honesty rule:** only check a box for a surface you can actually see. If you installed from Cowork and can't open the Code tab, do **not** claim the Code-only skills work — say "installed and ready in the Code tab; I couldn't verify from here" in your report. Report what you verified, flag what you couldn't.
+
 ## Step 5: Report and orient
 
 Tell the user, in plain language:

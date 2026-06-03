@@ -102,6 +102,12 @@ All three paths produce the same result: a fully scaffolded OS folder at the loc
 
 Your AI OS is yours. Edit any file. Add new skills (use `/aim-coach` to help you write them). Update `about-me/current-focus.md` whenever your priorities shift. The system grows with you.
 
+**Confirm it worked (10 seconds):**
+
+- Launch Claude from *inside* your OS folder — it should greet you knowing your name and role. If it doesn't, you launched from the wrong place; the folder is your AI's home base.
+- Type `/` and look for your skills. In **Cowork** you'll see 8; in the **Code tab / CLI** you'll see all 10 (the two agent-team skills, `/deep-research` and `/decision-council`, are Code-only by design).
+- If anything's missing, ask Claude to "check that all my OS skills and agents are installed" and re-run the step that fell short.
+
 Five things to try first:
 
 1. `/aim-coach` — give it a prompt you've been struggling with. Let it coach you.
