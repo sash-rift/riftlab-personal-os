@@ -28,9 +28,13 @@ From the cloned repo (or via WebFetch), you'll read:
 - `skills/daily-brief/SKILL.md`
 - `skills/meeting-prep/SKILL.md`
 - `skills/humanize/SKILL.md`
+- `skills/deep-research/` (SKILL.md + the `framework/` reference files)
+- `skills/decision-council/` (SKILL.md + `decision-council-plan.md`)
 - `agents/researcher.md`
 - `agents/critical-thinker.md`
 - `agents/coach.md`
+- `agents/oracle.md`, `agents/hermes.md`, `agents/athena.md`, `agents/scribe.md` (the `deep-research` agent team)
+- `agents/cmo-advisor.md`, `agents/cfo-advisor.md`, `agents/coo-advisor.md`, `agents/gc-advisor.md` (the `decision-council` advisor board)
 
 You'll write customized versions of the templates and exact copies of the skills to the user's chosen install location (default `~/.claude/`).
 
@@ -153,19 +157,66 @@ Copy `templates/rules/communication.md` as-is.
 
 Create both as empty folders with a `.gitkeep` file. The user populates these over time.
 
+## Step 3.9: Before you install — read this once
+
+Steps 4 through 4.55 copy files into the user's Claude config directory. These are running on a machine you don't fully know, so before any command, do three things.
+
+**1. Detect the OS and shell.** Determine whether you're on macOS/Linux (bash/zsh) or Windows (PowerShell). Every path and command below has a form for each. Never run a macOS command on Windows or the reverse — that's the single most common way this install breaks.
+
+**2. Know the target — same place, written two ways:**
+
+| | macOS / Linux | Windows (PowerShell) |
+| --- | --- | --- |
+| Claude config root | `~/.claude/` | `$env:USERPROFILE\.claude\` |
+| Skills install to | `~/.claude/skills/` | `$env:USERPROFILE\.claude\skills\` |
+| Agents install to | `~/.claude/agents/` | `$env:USERPROFILE\.claude\agents\` |
+
+When a step shows a Unix command, translate it for Windows:
+
+| Unix (macOS/Linux) | Windows (PowerShell) |
+| --- | --- |
+| `mkdir -p <dir>` | `New-Item -ItemType Directory -Force -Path <dir>` |
+| `cp -r <src> <dst>` | `Copy-Item -Recurse -Force <src> <dst>` |
+| `rm -rf <dir>` | `Remove-Item -Recurse -Force <dir>` |
+
+**3. The rule for every command below: the command is an example, the result is the requirement.** Each step states what must exist when it's done — a named file or folder at a target path. *That end state is the thing that matters; the exact command is just the usual way to reach it.* So:
+
+- Run the form that matches the user's actual OS.
+- **If no shell is available, or you can't confirm the shell is writing to the user's real machine** (this can happen in Cowork, whose shell may run in a sandbox separate from the user's computer), **use your own file-writing tools instead** to place the files at the target paths. What matters is the file landing in the right place, not which mechanism put it there.
+- **After every step, verify the end state** — confirm the named file or folder actually exists at the target. If it isn't there, the step did not succeed: retry, or switch method. Never report a step complete without confirming the files exist.
+
 ## Step 4: Install skills
 
 Skills live at `~/.claude/skills/` where Claude discovers them automatically. Install directly there, no symlinks. (Skills are infrastructure, not identity files. They don't need to live in the visible OS folder.)
 
+**What this step does:** copies six skill folders from the cloned repo (`<REPO_PATH>`) into the skills directory — one folder per skill. Recursive copy, because each skill is a folder (some carry sub-folders). Follow the Step 3.9 rule: run the form matching the OS, or use your file tools if the shell may be sandboxed.
+
+macOS / Linux:
+
 ```
 mkdir -p ~/.claude/skills
+# one recursive copy per skill folder
 cp -r <REPO_PATH>/skills/aim-coach ~/.claude/skills/
 cp -r <REPO_PATH>/skills/daily-brief ~/.claude/skills/
 cp -r <REPO_PATH>/skills/meeting-prep ~/.claude/skills/
 cp -r <REPO_PATH>/skills/humanize ~/.claude/skills/
+cp -r <REPO_PATH>/skills/deep-research ~/.claude/skills/
+cp -r <REPO_PATH>/skills/decision-council ~/.claude/skills/
 ```
 
-Verify each ends up at `~/.claude/skills/<name>/SKILL.md`.
+Windows (PowerShell) — same six copies, translated:
+
+```
+New-Item -ItemType Directory -Force -Path $env:USERPROFILE\.claude\skills | Out-Null
+Copy-Item -Recurse -Force <REPO_PATH>\skills\aim-coach       $env:USERPROFILE\.claude\skills\
+Copy-Item -Recurse -Force <REPO_PATH>\skills\daily-brief     $env:USERPROFILE\.claude\skills\
+Copy-Item -Recurse -Force <REPO_PATH>\skills\meeting-prep    $env:USERPROFILE\.claude\skills\
+Copy-Item -Recurse -Force <REPO_PATH>\skills\humanize        $env:USERPROFILE\.claude\skills\
+Copy-Item -Recurse -Force <REPO_PATH>\skills\deep-research   $env:USERPROFILE\.claude\skills\
+Copy-Item -Recurse -Force <REPO_PATH>\skills\decision-council $env:USERPROFILE\.claude\skills\
+```
+
+**Verify (required):** confirm a `SKILL.md` now exists at each `…/.claude/skills/<name>/SKILL.md` (all six). For `deep-research` and `decision-council`, also confirm their sub-folders arrived — `deep-research/framework/` (four files) and `decision-council/decision-council-plan.md` — the skills read from them at runtime. If any are missing, the recursive copy didn't take; redo it or use your file tools.
 
 If any of these already exist at `~/.claude/skills/<name>`, ask before overwriting. Back up first (`~/.claude/skills/<name>.backup-YYYYMMDD`).
 
@@ -177,20 +228,30 @@ Four Anthropic skills round out the kit. `docx`, `pdf`, and `pptx` are bundled w
 
 Steps:
 
-1. Clone Anthropic's skills repo to a temp location:
-   ```
-   git clone --depth 1 https://github.com/anthropics/skills.git /tmp/anthropic-skills
-   ```
+1. Clone Anthropic's skills repo to a temp location. (`--depth 1` grabs only the latest snapshot — faster, smaller.)
+   - macOS / Linux: `git clone --depth 1 https://github.com/anthropics/skills.git /tmp/anthropic-skills`
+   - Windows (PowerShell): `git clone --depth 1 https://github.com/anthropics/skills.git $env:TEMP\anthropic-skills`
 
-2. Copy these four skill folders directly into `~/.claude/skills/`:
+2. Copy these four skill folders into the skills directory (same recursive copy as Step 4):
+
+   macOS / Linux:
    ```
    cp -r /tmp/anthropic-skills/skills/docx ~/.claude/skills/
    cp -r /tmp/anthropic-skills/skills/pdf ~/.claude/skills/
    cp -r /tmp/anthropic-skills/skills/pptx ~/.claude/skills/
    cp -r /tmp/anthropic-skills/skills/internal-comms ~/.claude/skills/
    ```
+   Windows (PowerShell):
+   ```
+   Copy-Item -Recurse -Force $env:TEMP\anthropic-skills\skills\docx          $env:USERPROFILE\.claude\skills\
+   Copy-Item -Recurse -Force $env:TEMP\anthropic-skills\skills\pdf           $env:USERPROFILE\.claude\skills\
+   Copy-Item -Recurse -Force $env:TEMP\anthropic-skills\skills\pptx          $env:USERPROFILE\.claude\skills\
+   Copy-Item -Recurse -Force $env:TEMP\anthropic-skills\skills\internal-comms $env:USERPROFILE\.claude\skills\
+   ```
 
-3. Clean up: `rm -rf /tmp/anthropic-skills`.
+3. Clean up the temp clone: `rm -rf /tmp/anthropic-skills` (macOS/Linux) or `Remove-Item -Recurse -Force $env:TEMP\anthropic-skills` (Windows).
+
+**Verify (required):** confirm `SKILL.md` exists at each of the four `…/.claude/skills/{docx,pdf,pptx,internal-comms}/`. If the clone failed, handle it per the note below — don't silently skip the verify.
 
 If `git clone` fails (no internet or git not installed), skip this step and warn the user: "I couldn't fetch Anthropic's document skills (docx, pdf, pptx, internal-comms). Your four core skills (aim-coach, daily-brief, meeting-prep, humanize) installed fine. You can re-run setup later or install these manually from https://github.com/anthropics/skills."
 
@@ -198,40 +259,90 @@ If any of the four already exist at `~/.claude/skills/<name>`, ask before overwr
 
 ## Step 4.55: Install agents
 
-Three sub-agents ship with the kit (researcher, critical-thinker, coach). Install them at `~/.claude/agents/` where Claude Code discovers them for `@-mention` invocation.
+The kit ships two kinds of agents, both installed at `~/.claude/agents/` where Claude Code discovers them.
+
+- **Three thinking-partner agents** (researcher, critical-thinker, coach) — invoked directly by the user via `@-mention`. One for each kind of stuck.
+- **Eight skill-internal agents** (oracle, hermes, athena, scribe for `deep-research`; cmo-, cfo-, coo-, gc-advisor for `decision-council`) — orchestrated automatically by their parent skill, not meant for direct `@-mention`. They must be installed for those two skills to run.
+
+**What this step does:** copies 11 single-file agents (`.md` each) into the agents directory. These are plain file copies, not recursive — no sub-folders.
+
+macOS / Linux:
 
 ```
 mkdir -p ~/.claude/agents
+# thinking partners (@-mention)
 cp <REPO_PATH>/agents/researcher.md ~/.claude/agents/
 cp <REPO_PATH>/agents/critical-thinker.md ~/.claude/agents/
 cp <REPO_PATH>/agents/coach.md ~/.claude/agents/
+# deep-research team
+cp <REPO_PATH>/agents/oracle.md ~/.claude/agents/
+cp <REPO_PATH>/agents/hermes.md ~/.claude/agents/
+cp <REPO_PATH>/agents/athena.md ~/.claude/agents/
+cp <REPO_PATH>/agents/scribe.md ~/.claude/agents/
+# decision-council board
+cp <REPO_PATH>/agents/cmo-advisor.md ~/.claude/agents/
+cp <REPO_PATH>/agents/cfo-advisor.md ~/.claude/agents/
+cp <REPO_PATH>/agents/coo-advisor.md ~/.claude/agents/
+cp <REPO_PATH>/agents/gc-advisor.md ~/.claude/agents/
 ```
 
-Verify each lands at `~/.claude/agents/<name>.md`.
+Windows (PowerShell): create the folder with `New-Item -ItemType Directory -Force -Path $env:USERPROFILE\.claude\agents`, then `Copy-Item -Force <REPO_PATH>\agents\<name>.md $env:USERPROFILE\.claude\agents\` for each of the 11 files above.
+
+**Verify (required):** confirm all 11 `.md` files now exist in the agents directory.
 
 If any of these already exist at `~/.claude/agents/<name>.md`, ask before overwriting. Back up first (`~/.claude/agents/<name>.md.backup-YYYYMMDD`).
 
-Note: agent direct-invocation via `@agent-<name>` works in Claude Code (CLI + Desktop Code tab). In Cowork, agents are invoked autonomously by the orchestrator — students can say "use the critical thinker to stress-test this" and Cowork routes.
+**Where these actually work:** custom agents — both the three thinking partners and the eight skill-internal ones — are a **Claude Code** capability (CLI + Desktop Code tab). That's where `@agent-<name>` invocation and the multi-agent skills (`deep-research`, `decision-council`) run. **Cowork cannot invoke custom agents from `~/.claude/agents/`**, so the `@-mention` partners and the two orchestration skills are Code-tab features. We still install all 11 here so Code has them; Cowork just won't use them. (This is why Step 4.6 packages only the Cowork-safe skills for Cowork's menu.)
 
 ## Step 4.6: Package skills as a Cowork plugin (for Cowork's slash menu)
 
 This step only runs when you (Claude) are inside Claude Desktop's Cowork mode. Cowork has its own plugin loader separate from `~/.claude/skills/` — skills installed via Steps 4 and 4.5 are visible in Code/CLI but not in Cowork's `/` autocomplete. To fix that, package the user's skills into a personal Cowork plugin.
 
-Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default, so don't include them in the plugin. Only the 4 RiftLab skills (`aim-coach`, `daily-brief`, `meeting-prep`, `humanize`) and `internal-comms` need to be packaged (5 total).
+Note: `docx`, `pdf`, and `pptx` are already bundled with Cowork by default, so don't include them in the plugin. And **deliberately leave out `deep-research` and `decision-council`** — they depend on custom agents Cowork can't run, so they don't belong in Cowork's menu. (A student who clicked `/deep-research` there would hit a skill reaching for an agent team that isn't present — a broken first impression. Those two are Code-tab skills; see Step 5.) Package only the 4 lightweight RiftLab skills (`aim-coach`, `daily-brief`, `meeting-prep`, `humanize`) and `internal-comms` — 5 total. These run fully in Cowork.
 
 Steps:
 
-1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 5 RiftLab + internal-comms skills from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
+1. Confirm you have the `create-cowork-plugin` skill available. If you don't (you're running from Code or CLI instead of Cowork), skip this step and add this to your end-of-install report: "I'm not in Cowork mode, so I couldn't package your skills as a Cowork plugin. To make them appear in Cowork's slash menu, open Cowork and ask: 'Package the 5 Cowork-safe skills (aim-coach, daily-brief, meeting-prep, humanize, internal-comms) from `~/.claude/skills/` into a Cowork plugin called <user>-os.'"
 
 2. Run `create-cowork-plugin` with these inputs:
    - Plugin name: `<user-firstname-lowercase>-os` (e.g., `sash-os`, `maria-os`)
-   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `humanize`, `internal-comms` (5 total)
+   - Skills to include: `aim-coach`, `daily-brief`, `meeting-prep`, `humanize`, `internal-comms` (5 total — NOT deep-research or decision-council)
    - Description: "[Their name]'s personal AI OS: aim-coach, daily-brief, meeting-prep, humanize, internal-comms."
    - Source: `~/.claude/skills/` (where Steps 4 and 4.5 installed them)
 
 3. Install the resulting `.plugin` file into Cowork. The user should see it appear under Personal plugins.
 
-4. Verify in Cowork: type `/` and check that all 8 skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/docx`, `/pdf`, `/pptx`, `/internal-comms`) show up.
+4. Verify in Cowork: type `/` and check that the 8 Cowork-safe skills show up (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/internal-comms`, plus the bundled `/docx`, `/pdf`, `/pptx`). `/deep-research` and `/decision-council` should NOT appear here — that's intended; they live in the Code tab.
+
+## Step 4.7: Final verification — gate before you report
+
+Run this before Step 5. **Do not tell the user the install succeeded until every applicable box is confirmed.** If something fails, fix it (re-run the step, or switch to your file-writing tools) before reporting. Check files at the OS-appropriate paths from Step 3.9.
+
+**Identity files (at `<OS_PATH>`):**
+- [ ] `CLAUDE.md` exists (plus any file not marked "skip" in Step 2.5)
+- [ ] `agent.md`, `about-me/{identity,voice,current-focus}.md`, `rules/{writing-style,communication}.md` present
+- [ ] `references/` and `projects/` exist
+
+**Skills (in the skills dir — 10 total):**
+- [ ] `aim-coach`, `daily-brief`, `meeting-prep`, `humanize` each have a `SKILL.md`
+- [ ] `deep-research/SKILL.md` **and** `deep-research/framework/` (4 files) present
+- [ ] `decision-council/SKILL.md` **and** `decision-council/decision-council-plan.md` present
+- [ ] `docx`, `pdf`, `pptx`, `internal-comms` present — or explicitly noted as skipped if the Anthropic fetch failed
+
+**Agents (in the agents dir — 11 total):**
+- [ ] `researcher`, `critical-thinker`, `coach`
+- [ ] `oracle`, `hermes`, `athena`, `scribe`
+- [ ] `cmo-advisor`, `cfo-advisor`, `coo-advisor`, `gc-advisor`
+
+**Cowork menu (only if you packaged the plugin in Step 4.6):**
+- [ ] Typing `/` in Cowork shows the 8 Cowork-safe skills
+- [ ] `/deep-research` and `/decision-council` do **not** appear in Cowork — this is intended, not a failure
+
+**Light smoke test (recommended):**
+- [ ] From inside `<OS_PATH>`, launching Claude auto-loads `CLAUDE.md` (it greets the user by name/role)
+- [ ] In the Code tab / CLI, `/` lists the skills and an `@agent-` name resolves
+
+**Honesty rule:** only check a box for a surface you can actually see. If you installed from Cowork and can't open the Code tab, do **not** claim the Code-only skills work — say "installed and ready in the Code tab; I couldn't verify from here" in your report. Report what you verified, flag what you couldn't.
 
 ## Step 5: Report and orient
 
@@ -240,7 +351,8 @@ Tell the user, in plain language:
 - Where their OS lives. Specifically: "Your AI OS lives at `<OS_PATH>`. Open it in Finder (Mac) or File Explorer (Windows) anytime to see or edit your files."
 - **The home-folder pattern**: "Always launch Claude from inside `<OS_PATH>` (or work in this project in Cowork). Your CLAUDE.md and identity files load automatically when you do. If you launch Claude outside this folder, Claude won't know you. The simple rule: this folder is your AI home, work from here."
 - Skills are installed at `~/.claude/skills/` for Code/CLI discovery, and packaged as a personal Cowork plugin for Cowork's slash menu.
-- The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine, or `/humanize` on any draft that reads as AI-generated.
+- The skills available: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, `/deep-research`, `/decision-council` (built into this kit), plus `/docx`, `/pdf`, `/pptx`, and `/internal-comms` (fetched from Anthropic if the network call succeeded). Suggest they try `/aim-coach` first with any prompt they want to refine, or `/humanize` on any draft that reads as AI-generated.
+- **The two orchestration skills — and where to run them.** Say this plainly to the user: "Two of your skills, `/deep-research` and `/decision-council`, run a live team of agents — and that only works in the **Code tab** (or the Claude Code CLI), not in Cowork. You won't see them in Cowork's `/` menu; that's deliberate. To use them, open the Code tab in Claude Desktop and type `/deep-research` or `/decision-council` there." Then describe what they do: `/deep-research` runs a four-agent research team (plan → search → evaluate → synthesize) that returns verified, cited findings; `/decision-council` convenes a board of advisors (CMO, CFO, COO, GC) to pressure-test a real decision and hand back one recommendation with an owner. Tell the user to reach for these when the stakes justify the horsepower — not for quick lookups.
 - The agents available, framed as the kind of stuck each one solves (this framing matters, surface it clearly):
   - `@agent-researcher` — **Stuck on information?** You don't know something and you need verified findings with citations. Applies CRAAP and triangulation, hard token budget.
   - `@agent-critical-thinker` — **Stuck on an opinion or plan?** You have a position and want it stress-tested before you commit. Uses pre-mortem, inversion, second-order thinking, steel-manning, base rates, opportunity cost, 5 Whys.
