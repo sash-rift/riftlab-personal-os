@@ -30,6 +30,10 @@ This kit gives you the architecture that effective AI users build for themselves
 └─────────────────────────────────────────────────────────────┘
 ```
 
+Once installed, the same OS runs in two places — and the Code tab is the upgrade:
+
+![Where your AI OS runs: one install, two surfaces (Cowork and the Code tab / CLI)](assets/architecture.svg)
+
 ## What you'll get
 
 Your AI OS lives in a folder you pick (suggested: `~/intelligence/`, `~/MyAI/`, or `~/Documents/AI/`). It's a real, visible folder you can open in Finder (Mac) or File Explorer (Windows), edit directly, and version with git if you want.

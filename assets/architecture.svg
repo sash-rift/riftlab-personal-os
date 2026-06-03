@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900" font-family="ui-monospace, 'Geist Mono', 'SF Mono', Menlo, monospace">
+  <rect x="0" y="0" width="1280" height="900" fill="#0B0B0B"/>
+
+  <!-- Step 1: install prompt -->
+  <rect x="330" y="30" width="620" height="62" fill="#151515" stroke="#FFAE00" stroke-width="2"/>
+  <text x="640" y="69" fill="#FFAE00" font-size="22" text-anchor="middle">Paste one prompt  &#8594;  guided setup</text>
+
+  <!-- connector to OS -->
+  <line x1="640" y1="92" x2="640" y2="138" stroke="#5E5E5E" stroke-width="2.5"/>
+  <polygon points="640,146 632,132 648,132" fill="#5E5E5E"/>
+
+  <!-- OS node -->
+  <rect x="350" y="146" width="580" height="120" fill="#151515" stroke="#FFAE00" stroke-width="3"/>
+  <text x="640" y="190" fill="#FFAE00" font-size="32" font-weight="bold" text-anchor="middle">YOUR AI OS</text>
+  <text x="640" y="222" fill="#F2F2F2" font-size="20" text-anchor="middle">context  &#183;  10 skills  &#183;  11 agents</text>
+  <text x="640" y="249" fill="#8A8A8A" font-size="16" text-anchor="middle">installed to ~/.claude</text>
+
+  <!-- bus connector -->
+  <line x1="640" y1="266" x2="640" y2="300" stroke="#5E5E5E" stroke-width="2.5"/>
+  <line x1="350" y1="300" x2="930" y2="300" stroke="#5E5E5E" stroke-width="2.5"/>
+  <line x1="350" y1="300" x2="350" y2="338" stroke="#5E5E5E" stroke-width="2.5"/>
+  <line x1="930" y1="300" x2="930" y2="338" stroke="#5E5E5E" stroke-width="2.5"/>
+  <polygon points="350,346 342,332 358,332" fill="#5E5E5E"/>
+  <polygon points="930,346 922,332 938,332" fill="#5E5E5E"/>
+
+  <!-- LEFT panel: Cowork (white/gray = the everyday baseline) -->
+  <rect x="64" y="346" width="572" height="476" fill="#141414" stroke="#2C2C2C" stroke-width="2"/>
+  <rect x="64" y="346" width="9" height="476" fill="#C9C9C9"/>
+  <text x="104" y="398" fill="#F2F2F2" font-size="26" font-weight="bold">COWORK</text>
+  <text x="300" y="398" fill="#8A8A8A" font-size="17">everyday &#183; zero setup</text>
+  <line x1="104" y1="416" x2="600" y2="416" stroke="#2C2C2C" stroke-width="1.5"/>
+
+  <text x="104" y="468" fill="#F2F2F2" font-size="19">Your context loads automatically</text>
+  <text x="104" y="520" fill="#FFFFFF" font-size="19" font-weight="bold">8 skills work here:</text>
+  <text x="104" y="558" fill="#CFCFCF" font-size="18">aim-coach &#183; daily-brief &#183; meeting-prep</text>
+  <text x="104" y="592" fill="#CFCFCF" font-size="18">humanize &#183; internal-comms</text>
+  <text x="104" y="626" fill="#CFCFCF" font-size="18">docx &#183; pdf &#183; pptx</text>
+  <text x="104" y="690" fill="#777777" font-size="18">custom agents &#8212; not available here</text>
+
+  <!-- RIGHT panel: Code (gold = the upgrade) -->
+  <rect x="644" y="346" width="572" height="476" fill="#141414" stroke="#4A3A0C" stroke-width="2"/>
+  <rect x="1207" y="346" width="9" height="476" fill="#FFAE00"/>
+  <text x="684" y="398" fill="#FFAE00" font-size="26" font-weight="bold">CODE TAB / CLI</text>
+  <text x="960" y="398" fill="#8A8A8A" font-size="17">full power</text>
+  <line x1="684" y1="416" x2="1180" y2="416" stroke="#4A3A0C" stroke-width="1.5"/>
+
+  <text x="684" y="468" fill="#F2F2F2" font-size="19">Everything Cowork has, plus:</text>
+  <text x="684" y="520" fill="#CFCFCF" font-size="18"><tspan fill="#FFAE00" font-weight="bold">deep-research</tspan> &#8212; 4-agent research team</text>
+  <text x="684" y="558" fill="#CFCFCF" font-size="18"><tspan fill="#FFAE00" font-weight="bold">decision-council</tspan> &#8212; CMO/CFO/COO/GC board</text>
+  <text x="684" y="600" fill="#CFCFCF" font-size="18">@researcher &#183; @critical-thinker &#183; @coach</text>
+  <text x="684" y="690" fill="#FFAE00" font-size="18">the real multi-agent power</text>
+
+  <!-- footer -->
+  <text x="640" y="858" fill="#8A8A8A" font-size="17" text-anchor="middle">One install.  Two surfaces.  Code is the upgrade.</text>
+  <text x="640" y="888" fill="#FFAE00" font-size="18" font-weight="bold" text-anchor="middle">riftlab.ai</text>
+</svg>
