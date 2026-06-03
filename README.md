@@ -45,14 +45,14 @@ Inside the OS folder:
 - **references/** — empty to start. Domain knowledge you add over time (people, tools, glossary).
 - **projects/** — empty to start. One folder per active initiative.
 
-Skills are installed separately at `~/.claude/skills/` (where Claude looks for them) and as a personal Cowork plugin for the slash menu. Ten ready-to-use workflows ship with the kit:
+Skills install at `~/.claude/skills/` (where Claude Code looks for them); the Cowork-safe ones are also packaged as a personal Cowork plugin for its slash menu. Ten ready-to-use workflows ship with the kit — eight run anywhere (Code tab, CLI, **and** Cowork); the two marked **(Code tab / CLI only)** run a live agent team that Cowork can't host, so they work only in the Code tab or CLI:
 
 - `/aim-coach` — refine any prompt or system instruction through coaching
 - `/daily-brief` — morning brief that adapts to your role and priorities
 - `/meeting-prep` — strategic brief for any upcoming meeting
 - `/humanize` — rewrite AI-generated or AI-influenced text to remove tells and match your voice
-- `/deep-research` — run a four-agent research team (plan → search → evaluate → synthesize) for verified, cited findings on any question
-- `/decision-council` — convene a board of advisors (CMO, CFO, COO, GC) to pressure-test a real decision and return one recommendation with an owner
+- `/deep-research` — run a four-agent research team (plan → search → evaluate → synthesize) for verified, cited findings on any question **(Code tab / CLI only)**
+- `/decision-council` — convene a board of advisors (CMO, CFO, COO, GC) to pressure-test a real decision and return one recommendation with an owner **(Code tab / CLI only)**
 - `/docx` — create, read, edit Word documents (fetched from Anthropic's open skills repo on install)
 - `/pdf` — read, manipulate, create PDF files (fetched from Anthropic)
 - `/pptx` — build, edit, extract from PowerPoint decks (fetched from Anthropic)
@@ -65,6 +65,8 @@ Three sub-agents install at `~/.claude/agents/` for direct `@-mention` invocatio
 - `@agent-coach` — **Stuck on a decision?** You've been circling a choice and can't land it. Walks you through GROW (Goal, Reality, Options, Will) one question at a time. Asks, doesn't tell.
 
 Two of the skills bring their own agent teams. These install alongside the three above but run *under* the skill, not by `@-mention`: `/deep-research` orchestrates Oracle, Hermes, Athena, and Scribe; `/decision-council` convenes the CMO, CFO, COO, and GC advisors. You invoke the skill; it runs the team.
+
+**All custom agents — the three thinking partners and the two skill teams — are a Claude Code capability (Code tab + CLI).** Cowork can't invoke agents from `~/.claude/agents/`, so `@-mention` and the two orchestration skills live in the Code tab. The four lightweight skills work everywhere, including Cowork.
 
 ## Install (zero friction)
 
@@ -94,7 +96,7 @@ If you'd rather see what Claude is doing before letting it run, two alternate pa
 
 **Git clone.** If you have git installed and want a local copy: `git clone https://github.com/sash-rift/riftlab-personal-os`. Then in Claude Desktop: "Follow the setup.md recipe in /Users/me/riftlab-personal-os/."
 
-All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, and rules. CLAUDE.md auto-loads when you launch Claude inside the folder. Ten skills are installed at `~/.claude/skills/` for Code/CLI use and packaged into a personal Cowork plugin for Cowork's slash menu. Eleven agents install at `~/.claude/agents/`: three thinking partners for direct `@-mention`, plus eight skill-internal agents that power `/deep-research` and `/decision-council`.
+All three paths produce the same result: a fully scaffolded OS folder at the location you pick, with your customized CLAUDE.md, identity files, and rules. CLAUDE.md auto-loads when you launch Claude inside the folder. All ten skills install at `~/.claude/skills/` for Code-tab/CLI use; the eight Cowork-safe ones are also packaged into a Cowork plugin for its slash menu (the two agent-team skills stay Code-only). Eleven agents install at `~/.claude/agents/` for Claude Code: three thinking partners for direct `@-mention`, plus eight skill-internal agents that power `/deep-research` and `/decision-council`.
 
 ## After install
 
@@ -106,7 +108,7 @@ Five things to try first:
 2. `/daily-brief` — run it tomorrow morning before opening email.
 3. `/meeting-prep` — point it at your next meeting on the calendar.
 4. `@agent-critical-thinker` — paste a plan or thesis you want stress-tested.
-5. `/deep-research` — hand it a question you'd otherwise spend an afternoon researching.
+5. `/deep-research` (in the Code tab) — hand it a question you'd otherwise spend an afternoon researching.
 
 ## What this is not
 
