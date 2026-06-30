@@ -42,7 +42,7 @@ Then install `riftlab-os` from the marketplace.
 
 ### Step 2: Build your identity
 
-The plugin gives Claude capabilities. The interview gives Claude *you*. After installing, follow [INTERVIEW.md](INTERVIEW.md): paste it into Claude, or just say "run the RiftLab OS interview." It asks nine short questions and writes your identity files (CLAUDE.md, voice, rules) into a folder you pick (suggested `~/intelligence/`). Launch Claude from inside that folder and your context loads automatically.
+The plugin gives Claude capabilities. The interview gives Claude *you*. After installing, follow [INTERVIEW.md](INTERVIEW.md): paste it into Claude, or just say "run the RiftLab OS interview." It asks a few short questions and writes your identity files (CLAUDE.md, voice, rules) into a folder you pick (suggested `~/intelligence/`). Launch Claude from inside that folder and your context loads automatically.
 
 ## Where things run
 
