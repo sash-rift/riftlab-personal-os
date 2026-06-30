@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "riftlab-os",
-      "source": "./",
+      "source": "./plugins/riftlab-os",
       "description": "Personal AI OS: skills, a multi-agent thinking team, and a guided install."
     }
   ]
