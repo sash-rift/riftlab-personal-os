@@ -1,90 +1,98 @@
 ---
 name: meeting-prep
-description: Generate a strategic brief for an upcoming meeting. Outputs who, why, agenda, key questions, risks, and the one outcome to aim for. Adapts to the user's role and pulls relationship context from references/people.md when available. Use when the user says "prep me for [meeting]", "meeting prep", "I have a call with [person]", or describes an upcoming conversation they need to ready for.
+description: Prepare for an upcoming meeting. Classifies the meeting, researches what's needed (the company, the people, the history, or the strategy), and produces a brief built for that specific meeting. Use when the user says "prep me for [meeting]", "meeting prep", "I have a call with [person]", "help me get ready for", or describes a meeting they need to walk into prepared.
 ---
 
 # Meeting Prep
 
-You produce a strategic brief for an upcoming meeting. The brief gives the user clarity on what they're trying to accomplish and how to handle the conversation.
+You prepare the user for one specific meeting. There is no canonical brief, because meetings are not alike: a sales call needs company research, an interview needs research on the people, an internal sync needs last time's open items, a kickoff needs an agenda, a negotiation needs strategy. What is canonical is the flow. Classify the meeting, ask only what you can't infer, gather what that type needs, and render a brief shaped to it.
 
-## Identity
+Two disciplines hold throughout: cite where each fact came from, and show nothing rather than pad. A short brief that's all signal beats a long one with filler.
 
-You are a thinking partner, not a meeting scribe. You help the user walk in with a goal, a plan, and the right questions. You think one move ahead.
+## Phase 0: Load the lens
 
-Match the user's voice. Pull tone from `about-me/voice.md`. Pull role context from `about-me/identity.md`. Pull current focus from `about-me/current-focus.md` so the meeting brief connects to what the user is working on this week.
+Read `about-me/identity.md` if it exists, for the user's role. Role shapes what a good outcome looks like and what's worth researching. That's the only file you load up front.
 
-## Inputs to Gather
+Pull more only if the meeting calls for it: read `about-me/current-focus.md` only when the meeting connects to an active project and tying the prep to that work helps. Don't load it by default.
 
-You need four pieces of context. Get them from the user, from the calendar, or from references. Ask one question at a time for anything you can't get from context.
+This brief is a working document the user reads before walking in, not published content, so don't load voice rules. Just write it tight and direct, no filler.
 
-1. **Who** is the meeting with. Name + role + their company/team. If `references/people.md` exists and the person is listed there, pull that context first.
-2. **Why** the meeting is happening. Kickoff, status check, decision, negotiation, conflict resolution, ideation, relationship building, etc.
-3. **Recent history.** What happened in the last conversation with this person/team, if any. Check meeting transcripts (Granola), past notes, or ask.
-4. **Goal.** What does the user want to walk out with? A decision, a commitment, more info, an aligned next step, a deepened relationship.
+## Phase 1: Classify and fill the gaps
 
-If the user gives a quick "prep me for my 2pm with Sarah" with no other context, ask: "Quick context — what's the meeting for, and what do you want to walk out with?" That covers gap #2 and #4 in one ask. Only ask one follow-up if needed.
+**Identify the meeting.** If a calendar connector is available, find the event (title, time, attendees, description). Otherwise, the user names it.
 
-## Output Structure
+**Classify the type** from the title and who's attending. Most meetings fall into one of these, and the type decides everything downstream:
+
+- **External / sales:** a prospect, customer, partner, or vendor.
+- **Interview:** hiring, being hired, or a reference call.
+- **Internal sync / 1:1:** people inside the user's own org.
+- **Kickoff / planning:** starting something, or structuring a decision.
+- **Negotiation / high-stakes:** a deal, a conflict, or a conversation with real downside.
+
+If the title and attendees make the type obvious, don't ask. If they don't, ask.
+
+**Ask only the gaps, batched into one short message.** The one question almost always worth asking is the goal: "What do you want to walk out with?" Add a second only when the type or focus is genuinely unclear: "What should I focus on, the company, the people, the agenda, or the strategy?" Don't interrogate. Infer everything you can; ask for the rest once.
+
+## Phase 2: Gather what the type needs
+
+Route by type. Don't run a fixed pipeline; pull only the sources that matter for this meeting.
+
+| Type | Gather |
+| --- | --- |
+| External / sales | the company (what they do, recent news, funding, size); the person (role, tenure, background); the recent email thread; any past notes |
+| Interview | the people's backgrounds and the company/role; recent news; what they likely care about |
+| Internal sync / 1:1 | the last meeting's notes and open action items; the recent email thread |
+| Kickoff / planning | the objective, prior decisions, who owns what; a draft agenda with rough time blocks |
+| Negotiation / high-stakes | the strategic picture: the other side's goal and their alternative if this doesn't land; likely objections; the decision criteria |
+
+Tools, used as the type requires: web search for a company or a person, Granola for past meeting notes, Gmail for the email thread, the calendar event for who's in the room. None of this comes from a maintained contact list.
+
+**Inventory before you write.** Note what you actually found and where the gaps are. If a person has no online presence and no prior history, say so rather than inventing a profile. If you can't find the company's recent news, say that too. Gaps named are more useful than gaps papered over.
+
+## Phase 3: Synthesize, by type
+
+Turn what you gathered into something usable in the room.
+
+- **The outcome is universal.** Every brief names one outcome to aim for, framed as a concrete result that moves things forward, not "have a good meeting." Where it helps, add a backup outcome and a walk-away minimum.
+- **Research-heavy types** (external, interview): synthesize the findings into who they are, what they likely care about, and the few talking points and questions that follow.
+- **Strategy types** (negotiation, high-stakes): work out the other side's view (their goal, their alternative), and pre-empt the one or two likely objections, each paired with the interest underneath it and how you'd frame it before it's raised.
+- **Agenda types** (kickoff, planning): build the actual agenda, the decision points, and who needs to be in each part.
+
+## Phase 4: Render
+
+A spine that adapts to the type, not a fixed template. Always lead with the meeting and the outcome; include the type-specific blocks; always close with the questions to ask.
 
 ```
-# Meeting Prep: [Person/Team] — [Date, Time]
-
-## Who
-[Name, role, company. One paragraph: who they are professionally, any relevant relationship context, what they care about. If you have no info, say so.]
-
-## Recent History
-[What happened in the last conversation or interaction. Specific. If no history, say "First conversation" or "No recent context available."]
+# Meeting Prep: [Person / Team], [Date, Time]
 
 ## Goal
-[The one outcome to aim for. State it as one sentence the user could write in their notebook before walking in.]
+[The one outcome to aim for, in a sentence the user could write down before walking in. Add backup / walk-away if relevant.]
 
-## Agenda (Suggested)
-1. [Item]
-2. [Item]
-3. [Item]
+## [Type-specific block(s)]
+- External/sales:  Company snapshot · Who you're meeting · What changed since last contact
+- Interview:       Who you're meeting · Company/role context · What they likely care about
+- Internal/1:1:    Last time · Open action items · What's unresolved
+- Kickoff/planning: Objective · Agenda with time blocks · Decision points · Owners
+- Negotiation:     The other side's view · Their alternative · Objections, pre-empted
 
-## Key Questions to Ask
-- [Question that surfaces information you need]
-- [Question that tests an assumption you're carrying in]
-- [Question that opens a door for the other person to give you what you want]
+## Questions to Ask
+- [A question that surfaces what you need]
+- [A question that tests an assumption you're carrying in]
 
-## Risks
-- [What could go wrong, what's sensitive, what's a tripwire]
+## Risks  [include only when there's a real one]
+- [What could go wrong, what's sensitive, the one thing not to bring up]
 
-## One Thing Not to Bring Up
-[Optional. The one topic that would derail this meeting if mentioned. Skip the section if nothing fits.]
+## Sources & Gaps
+- [Where the facts came from; what you couldn't find]
 ```
 
-## Adapt to the User's Role
+Drop any block that's empty. A brand-new contact with no history gets a short brief and a few warm-up questions, not padding.
 
-Pull role from `about-me/identity.md` and shape the brief accordingly:
+## Phase 5: Self-review before delivering
 
-- **Lawyer / counsel**: think privilege, exposure, settlement leverage, what's on the record. "Goal" is often a position to hold or a fact to extract.
-- **Sales / BD**: think next step, qualification, commitment. "Goal" is the specific advancement (signed proposal, intro to decision-maker, agreed timeline).
-- **Product manager**: think scope, deadlines, dependencies, alignment. "Goal" is often a decision made or a commitment locked.
-- **Executive / founder**: think narrative, stakeholder management, optics, alignment. "Goal" is the message that lands and the relationship that strengthens.
-- **Educator / advisor**: think learning outcome, engagement, follow-up. "Goal" is the insight the student/advisee walks away with.
-- **Researcher / analyst**: think information transfer, peer review, framing. "Goal" is the gap closed in the research or the validation received.
-
-If the user's role isn't covered, infer the high-stakes elements from `identity.md`.
-
-## When the Meeting Is With Someone You Know Well
-
-If the person is in `references/people.md` with rich context, the "Who" section can be brief ("Sarah, you know her well"). Spend more space on Recent History and Goal.
-
-If the person is new (no context anywhere), lead with "I don't have prior context on [name]. Here's what I'd ask in the first 5 minutes to figure out where they're coming from:" and offer 3 questions for the warm-up.
-
-## Voice Rules
-
-- Match the user's voice. Pull from `voice.md`.
-- No filler. Don't preface with "Here's your prep brief!"
-- Be direct. The user is about to walk into a meeting. Don't waste their time.
-- Specific over abstract. "Get Sarah to confirm the Friday timeline" beats "align on schedule."
-
-## Self-Review Before Delivering
-
-1. Can the user use this in the meeting, or is it generic advice? If generic, sharpen.
-2. Did I name the one outcome to aim for, in one sentence?
-3. Are the questions things the user can actually say out loud?
-4. Did I match their voice?
-5. Any em dashes? Replace.
+1. Could the user use this in the room, or is it generic advice? If generic, sharpen or cut.
+2. Is the goal a concrete outcome that moves things, not "have a good meeting"?
+3. Did I gather what *this type* needs, and skip what it doesn't?
+4. Are the questions things the user can actually say out loud?
+5. Did I cite sources and name the gaps, rather than invent to fill them?
+6. Any em dashes? Replace.
