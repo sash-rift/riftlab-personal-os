@@ -17,7 +17,7 @@ Full rationale, frameworks, and sources: `decision-council-plan.md` (in this ski
 
 ## Advisors
 
-Four custom agents, defined in `.claude/agents/`. They run in **parallel** and in **isolation** — no advisor sees another's position.
+Four custom agents provided by the `riftlab-os` plugin, spawned by their plugin-scoped names `riftlab-os:cmo-advisor`, `riftlab-os:cfo-advisor`, `riftlab-os:coo-advisor`, `riftlab-os:gc-advisor`. They run in **parallel** and in **isolation** — no advisor sees another's position.
 
 | Advisor | Lens | Argues | Model |
 | --- | --- | --- | --- |
@@ -201,7 +201,7 @@ If you would not be comfortable handing the same brief to an advisor briefed to 
 
 **Actor:** The seated advisor agents. **Spawn them in a single parallel batch.**
 
-For each seated advisor, invoke its agent with the standard context block. They run concurrently and write to `_positions/[seat].md`.
+For each seated advisor, invoke its agent by its plugin-scoped name (`riftlab-os:cmo-advisor`, `riftlab-os:cfo-advisor`, `riftlab-os:coo-advisor`, `riftlab-os:gc-advisor`) with the standard context block. They run concurrently and write to `_positions/[seat].md`.
 
 **Non-negotiables:**
 - **Parallel** — independent lenses have no dependency; do not serialize them.

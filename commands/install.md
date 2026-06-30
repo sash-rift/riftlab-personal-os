@@ -1,5 +1,6 @@
 ---
-description: Set up your RiftLab Personal AI OS — a guided interview that writes your identity files (CLAUDE.md, voice, rules) into a folder you own.
+description: "Set up your RiftLab Personal AI OS: a guided interview that writes your identity files (CLAUDE.md, voice, rules) into a folder you own."
+disable-model-invocation: true
 ---
 
 # Install your Personal AI OS
