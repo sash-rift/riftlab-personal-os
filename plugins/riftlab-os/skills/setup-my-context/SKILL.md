@@ -1,11 +1,11 @@
 ---
 name: setup-my-context
-description: One-time setup for the Personal AI OS. Interviews the user, then writes their personal context files (CLAUDE.md, identity, voice, rules) into a folder they own, so every session knows who they are and how they work. Use right after installing the plugin, or when the user says "help me set up my AI OS", "set up my context", "set up my personal OS", "onboard me", "run the RiftLab OS setup", or "personalize my AI".
+description: One-time setup for the Personal AI OS. Interviews the user, then writes their personal context files (CLAUDE.md, identity, voice, rules) into the folder they're working in, so every session knows who they are and how they work. Use right after installing the plugin, or when the user says "help me set up my context", "set up my personal OS", "onboard me", "run the RiftLab OS setup", or "personalize my AI".
 ---
 
 # Set up the Personal AI OS
 
-This is the one-time personalization for the Personal AI OS. The plugin already installed the skills and agents. This runs a short interview, then writes the user's context files into a folder they own, so every Claude session knows who they are and how they work. It is self-contained: generate every file from the answers, there is nothing to download.
+This is the one-time personalization for the Personal AI OS. The plugin already installed the skills and agents. This runs a short interview, then writes the user's context files into the folder they're working in, so every Claude session knows who they are and how they work. It is self-contained: generate every file from the answers, there is nothing to download.
 
 Work through it in order, conversationally, one question at a time. Say what you are writing as you go ("writing your voice.md now"). Keep the tone warm, brief, and free of filler.
 
@@ -13,47 +13,49 @@ Work through it in order, conversationally, one question at a time. Say what you
 
 Confirm you can write files on this machine. The Claude Desktop Code tab, Cowork, and the Claude Code CLI all can; plain claude.ai chat cannot. If you cannot write files, tell the user to run this from the Code tab, Cowork, or the CLI, and stop here.
 
-## Step 1: Orient the user
+## Step 1: Confirm the folder
 
-In a sentence or two, in your own words: you are about to set up their personal AI OS, it takes about five minutes, you will ask a handful of questions and then write their files into a folder they choose. Then begin the interview.
+The user should already be working in the folder they made for their AI OS, and this builds it there. Check the current working directory and tell them which folder you'll use ("I'll set up your OS here: [folder]. Is that the one you made for this?"). Wait for them to confirm. If they point you at a different existing folder, use that instead. Don't create a new nested folder or invent a path. Call the confirmed folder `<OS_PATH>` below.
+
+Then orient them in a sentence or two: you'll ask a handful of questions, then write their files here; it takes about five minutes.
 
 ## Step 2: Interview
 
 Ask these one at a time. Wait for each answer before the next; do not batch them. If an answer is thin, ask one follow-up, then move on.
 
-1. **Name and address.** "What's your full name, and what should I call you day to day?"
+1. **Name.** "What's your full name?"
 2. **Role.** "What's your role, and where do you work?"
 3. **Day to day.** "What do you actually do day to day? Two or three sentences is plenty."
 4. **Voice.** "How do you write when it sounds like you: direct, reflective, formal, casual? And what can't you stand: em dashes, corporate-speak, fake enthusiasm, anything?"
-5. **Your AI.** "Want to name your AI? People use Nuro, Atlas, Sage, or skip it and it stays Claude. And how should it act with you: a co-creator that pushes back, a peer that collaborates, an executor that ships fast, a coach that challenges? Use your own words."
+5. **Your AI.** "Want to name your AI? People use names like Atlas, Sage, or Echo, or skip it and it stays Claude. And how should it act with you: a co-creator that pushes back, a peer that collaborates, an executor that ships fast, a coach that challenges? Use your own words."
 6. **Current focus.** "What are the two or three things on your plate right now that I should know about?"
 7. **Tools.** "What tools do you live in day to day? Calendar, email, Notion, Slack, whatever. Just list them."
-8. **Home.** "Where should your AI OS live? Pick a real folder you can open in Finder or File Explorer. `~/intelligence/` is a good default; you can also give your own path."
-
-For the home folder, don't suggest `~/.claude/` (a hidden config folder): this should feel like a real, owned thing. Respect `~/.claude/` only if they explicitly ask for it.
 
 ## Step 3: Check for existing files
 
-Before writing anything, look at the chosen folder. If it already holds a `CLAUDE.md`, or any of the files below with real content the user wrote, don't overwrite silently: tell them what's there, back the file up (append `.backup` and today's date), then write the new version. If a file is empty or just placeholder scaffold, replace it directly. The folders (`about-me/`, `rules/`, `references/`, `projects/`) are additive: create them if missing, never disturb existing contents.
+Before writing anything, look at `<OS_PATH>`. If it already holds a `CLAUDE.md`, or any of the files below with real content the user wrote, don't overwrite silently: tell them what's there, back the file up (append `.backup` and today's date), then write the new version. If a file is empty or just placeholder scaffold, replace it directly. The folders (`about-me/`, `rules/`, `references/`, `projects/`) are additive: create them if missing, never disturb existing contents.
 
 ## Step 4: Write the context files
 
-Generate each file below into the chosen folder (`<OS_PATH>`) from the interview answers. You are writing these from scratch; the structure and defaults are specified here, so you don't need any template. Use the user's own words and don't sanitize their voice. Tell the user as you write each one.
+Generate each file below into `<OS_PATH>` from the interview answers. You are writing these from scratch; the structure and defaults are specified here, so you don't need any template. Use the user's own words and don't sanitize their voice. Tell the user as you write each one.
 
-**`CLAUDE.md`** (the root file; loads every session)
-Title it for them ("[Name]'s Intelligence System"). At the top, import the other files so they load automatically on surfaces that honor imports:
+**`CLAUDE.md`** (the root file; it loads into context every session, so keep it lean)
+Title it for them ("[Name]'s Intelligence System"). Import only the always-relevant identity, so the file that loads every session stays small:
 ```
 @agent.md
 @about-me/identity.md
-@about-me/voice.md
 @about-me/current-focus.md
-@rules/writing-style.md
-@rules/communication.md
 ```
-Then add a short "Where things live" section: one line per file saying what it holds and when to read it, so surfaces like Cowork that don't auto-load imports know where to look on demand. End with a curation rule: review this file monthly, and cut any line that wouldn't cause a mistake if it were removed.
+Then add a "Where things live" section that names the rest as files to read on demand, rather than loading them into every session:
+- `about-me/voice.md`: read before drafting anything they'll send or publish.
+- `rules/writing-style.md`: read before drafting written content.
+- `rules/communication.md`: how to format responses; read when it matters.
+- `references/` and `projects/`: read the relevant file when that topic comes up.
+
+Keep `CLAUDE.md` well under 200 lines (Anthropic's guidance): a bloated memory file gets followed less, not more. End with a curation rule: review this file monthly, and cut any line that wouldn't cause a mistake if it were removed.
 
 **`about-me/identity.md`**
-Who they are, from answers 1 to 3, in the first person: their name, what to call them, their role and company, and what they actually do day to day. This is what Claude reads to answer questions about their work and background.
+Who they are, from answers 1 to 3, in the first person: their name, their role and company, and what they actually do day to day. This is what Claude reads to answer questions about their work and background.
 
 **`about-me/voice.md`**
 How they write, from answer 4, translated into specific rules. Always include these defaults, which every OS keeps: no em dashes; no hedging ("try to", "might", "could" when you mean the thing); no filler openings ("I hope this finds you well", "Great question"); say it once, plainly. Then layer their stated preferences and dislikes on top, in their words. This file is read before drafting anything they will send or publish.
