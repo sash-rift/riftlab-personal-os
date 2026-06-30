@@ -1,0 +1,15 @@
+{
+  "name": "riftlab",
+  "owner": {
+    "name": "Sash Mohapatra",
+    "email": "sash@riftlab.ai"
+  },
+  "description": "RiftLab Personal AI OS",
+  "plugins": [
+    {
+      "name": "riftlab-os",
+      "source": "./",
+      "description": "Personal AI OS: skills, a multi-agent thinking team, and a guided install."
+    }
+  ]
+}
