@@ -13,7 +13,9 @@ Multi-agent research workflow producing verified, actionable insight.
 
 ## Agents
 
-This workflow uses four specialized agents. They are defined in `.claude/agents/`:
+This workflow uses four specialized agents, provided by the `riftlab-os` plugin. Spawn each one by its plugin-scoped name: `riftlab-os:oracle`, `riftlab-os:hermes`, `riftlab-os:athena`, `riftlab-os:scribe`.
+
+**Framework files (orchestrator: resolve before Phase 1).** The source-quality and process rules live in this skill's own `framework/` directory, next to this `SKILL.md`. Determine the absolute path to that directory on this machine, and use it wherever `[FRAMEWORK_DIR]` appears below. The agents run in their own context, so you must pass the resolved absolute path into each invocation; a bare relative path will not resolve from inside an agent.
 
 | Agent      | Role                                                                    | Model  | Tools                  |
 | ---------- | ----------------------------------------------------------------------- | ------ | ---------------------- |
@@ -404,12 +406,12 @@ Only proceed when user confirms.
 ### Invocation
 
 ```
-Use the oracle agent to create a research plan.
+Use the `riftlab-os:oracle` agent to create a research plan.
 
 Inputs:
 - Research goal: [GOAL from user]
 - Context document: Research/[topic]/context.md
-- Framework location: ~/.claude/skills/deep-research/framework/
+- Framework location: [FRAMEWORK_DIR]/
 
 Output location: Research/[topic]/_plan.md
 ```
@@ -450,7 +452,7 @@ Approve this plan to begin research?
 For each angle in the research plan:
 
 ```
-Use the hermes agent to research angle [N]: [Angle Name].
+Use the `riftlab-os:hermes` agent to research angle [N]: [Angle Name].
 
 RESEARCH CONTEXT:
 - Current date: [YYYY-MM-DD]
@@ -467,7 +469,7 @@ Inputs:
 - Research plan: Research/[topic]/_plan.md
 - Assigned angle: [Angle Name]
 - Context: Research/[topic]/context.md
-- Framework: ~/.claude/skills/deep-research/framework/
+- Framework: [FRAMEWORK_DIR]/
 
 Output location: Research/[topic]/_raw/[NN]-[angle-slug].md
 ```
@@ -527,7 +529,7 @@ Athena now handles both evaluation and analysis in a single pass, eliminating ha
 ### Invocation
 
 ```
-Use the athena agent to evaluate and analyze the research findings.
+Use the `riftlab-os:athena` agent to evaluate and analyze the research findings.
 
 RESEARCH CONTEXT:
 - Current date: [YYYY-MM-DD]
@@ -539,7 +541,7 @@ Inputs:
 - Raw findings: Research/[topic]/_raw/*.md (all Hermes outputs)
 - Research plan: Research/[topic]/_plan.md (quality criteria)
 - Context: Research/[topic]/context.md
-- Framework: ~/.claude/skills/deep-research/framework/
+- Framework: [FRAMEWORK_DIR]/
 
 Output location: Research/[topic]/_analysis.md
 ```
@@ -579,7 +581,7 @@ Output location: Research/[topic]/_analysis.md
 ### Invocation
 
 ```
-Use the scribe agent to write the final synthesis.
+Use the `riftlab-os:scribe` agent to write the final synthesis.
 
 RESEARCH CONTEXT:
 - Current date: [YYYY-MM-DD]
@@ -590,7 +592,7 @@ RESEARCH CONTEXT:
 Inputs:
 - Analysis: Research/[topic]/_analysis.md (includes Data Point Registry)
 - Context: Research/[topic]/context.md
-- Framework: ~/.claude/skills/deep-research/framework/
+- Framework: [FRAMEWORK_DIR]/
 
 Output location: Research/[topic]/[YYYY-MM-DD]-[topic]-synthesis.md
 ```
@@ -654,29 +656,29 @@ TEMPORAL GUIDANCE:
 - Flag pre-2023 data as potentially outdated
 
 # Phase 1: Planning
-Use the oracle agent to create a research plan.
+Use the `riftlab-os:oracle` agent to create a research plan.
 [Include context block above]
 Context document: Research/[topic]/context.md
 
 # Phase 2: Research (parallel - one per angle)
-Use the hermes agent to research angle 1: [Angle Name]
+Use the `riftlab-os:hermes` agent to research angle 1: [Angle Name]
 [Include context block above]
 Research plan: Research/[topic]/_plan.md
 
-Use the hermes agent to research angle 2: [Angle Name]
+Use the `riftlab-os:hermes` agent to research angle 2: [Angle Name]
 [Include context block above]
 Research plan: Research/[topic]/_plan.md
 
 [Run all Hermes agents in parallel]
 
 # Phase 3: Analysis (evaluation + patterns + themes)
-Use the athena agent to evaluate and analyze findings.
+Use the `riftlab-os:athena` agent to evaluate and analyze findings.
 [Include context block above]
 Raw findings: Research/[topic]/_raw/
 Context: Research/[topic]/context.md
 
 # Phase 4: Synthesis
-Use the scribe agent to write synthesis.
+Use the `riftlab-os:scribe` agent to write synthesis.
 [Include context block above]
 Analysis: Research/[topic]/_analysis.md
 ```
@@ -685,7 +687,7 @@ Analysis: Research/[topic]/_analysis.md
 
 ## Framework Reference
 
-Agents read from `~/.claude/skills/deep-research/framework/`:
+Agents read from `[FRAMEWORK_DIR]/`:
 
 | Document | Used By | Purpose |
 |----------|---------|---------|
