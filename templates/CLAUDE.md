@@ -27,7 +27,7 @@ These pointers tell Claude where to look for context that isn't already loaded. 
 - **People context**: `references/people.md` (if it exists). Read before meeting prep, drafting to specific people, or recalling who someone is.
 - **Tools and systems**: `references/tools.md` (if it exists). Read when I reference a tool, platform, or workflow I use.
 - **Active projects**: `projects/[name]/` — read the project folder when I mention an active initiative by name.
-- **Skills**: invoked with `/skill-name`. Live at `~/.claude/skills/`.
+- **Skills**: invoked with `/skill-name`. Provided by the riftlab-os plugin and listed in the `/` menu.
 - **Memory**: auto-managed by Claude across sessions.
 
 ---

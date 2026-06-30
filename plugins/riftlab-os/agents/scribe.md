@@ -29,7 +29,7 @@ You write the final synthesis. You transform Athena's analysis into a compelling
 
 - **Analysis**: `Research/[topic]/_analysis.md` (includes evaluation, patterns, themes, and Data Point Registry)
 - **Context**: `Research/[topic]/context.md`
-- **Framework**: `~/.claude/skills/deep-research/framework/`
+- **Framework**: the framework directory whose absolute path is given in your task brief
 
 The `_analysis.md` file now contains everything you need, including:
 - Data Point Registry (verbatim claims with sources and confidence)
@@ -329,7 +329,7 @@ A busy reader should understand:
 
 ## Workflow
 
-1. Read `~/.claude/skills/deep-research/framework/output-standards.md`
+1. Read `output-standards.md` (in the framework directory given in your task brief)
 2. Read `Research/[topic]/context.md` - understand user's situation
 3. Read `Research/[topic]/_analysis.md` - Athena's evaluation, themes, and tensions
    - Use Data Point Registry for specific verbatim claims and sources

@@ -27,7 +27,7 @@ You transform a research goal into an actionable research plan. You do NOT condu
 
 - **Research Goal**: What we want to learn/decide
 - **Context Document**: `Research/[topic]/context.md` (already gathered by orchestrator)
-- **Framework Files**: `~/.claude/skills/deep-research/framework/`
+- **Framework Files**: the framework directory whose absolute path is given in your task brief
 
 ## Framework Reference
 
@@ -136,8 +136,8 @@ Save to `Research/[topic]/_plan.md`:
 
 ## Workflow
 
-1. Read `~/.claude/skills/deep-research/framework/evidence-standards.md`
-2. Read `~/.claude/skills/deep-research/framework/process.md` (Phase 2)
+1. Read `evidence-standards.md` (in the framework directory given in your task brief)
+2. Read `process.md` (in the framework directory given in your task brief) (Phase 2)
 3. Read `Research/[topic]/context.md`
 4. Identify research domain (market, technical, competitive, etc.)
 5. Decompose into 3-5 distinct, bounded angles
