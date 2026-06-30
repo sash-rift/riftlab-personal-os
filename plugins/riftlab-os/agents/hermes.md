@@ -29,7 +29,7 @@ You find and extract data. You do NOT evaluate, analyze, or synthesize. You coll
 - **Research Plan**: `Research/[topic]/_plan.md`
 - **Your Assigned Angle**: Specified in your task
 - **Context**: `Research/[topic]/context.md`
-- **Framework**: `~/.claude/skills/deep-research/framework/`
+- **Framework**: the framework directory whose absolute path is given in your task brief
 
 ## Framework Reference
 
@@ -245,7 +245,7 @@ Save to `Research/[topic]/_raw/[NN]-[angle-slug].md`:
 ## Workflow
 
 1. **Note the current date** from your task prompt - use for temporal anchoring
-2. Read `~/.claude/skills/deep-research/framework/evidence-standards.md` (Sections 1, 3)
+2. Read `evidence-standards.md` (in the framework directory given in your task brief) (Sections 1, 3)
 3. Read `Research/[topic]/_plan.md` - locate your assigned angle
 4. Read `Research/[topic]/context.md` - understand what we're researching FOR
 5. Construct topic-focused queries (NOT source-focused) with year anchors

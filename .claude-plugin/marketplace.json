@@ -9,7 +9,7 @@
     {
       "name": "riftlab-os",
       "source": "./plugins/riftlab-os",
-      "description": "Personal AI OS: skills, a multi-agent thinking team, and a guided install."
+      "description": "Personal AI OS: a set of skills and a multi-agent thinking team. Personalize it with a short identity interview after installing."
     }
   ]
 }

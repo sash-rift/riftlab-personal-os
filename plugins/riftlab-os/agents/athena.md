@@ -40,7 +40,7 @@ You are both **quality gatekeeper** and **pattern finder**. You determine what d
 - **Raw Findings**: `Research/[topic]/_raw/*.md` (all Hermes outputs)
 - **Research Plan**: `Research/[topic]/_plan.md` (quality criteria, angles)
 - **Context**: `Research/[topic]/context.md` (user's decision, constraints)
-- **Framework**: `~/.claude/skills/deep-research/framework/`
+- **Framework**: the framework directory whose absolute path is given in your task brief
 
 ## Framework Reference
 
@@ -288,8 +288,8 @@ These MUST appear in final synthesis with sources:
 ## Workflow
 
 ### Phase 1: Evaluation
-1. Read `~/.claude/skills/deep-research/framework/evidence-standards.md`
-2. Read `~/.claude/skills/deep-research/framework/quality-standards.md`
+1. Read `evidence-standards.md` (in the framework directory given in your task brief)
+2. Read `quality-standards.md` (in the framework directory given in your task brief)
 3. Read `Research/[topic]/context.md` - understand what we're researching FOR
 4. Read `Research/[topic]/_plan.md` - understand quality criteria and must-finds
 5. Read ALL files in `Research/[topic]/_raw/`

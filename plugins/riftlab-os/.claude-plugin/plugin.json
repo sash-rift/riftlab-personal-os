@@ -1,6 +1,6 @@
 {
   "name": "riftlab-os",
-  "description": "RiftLab Personal AI OS: identity scaffolding, coaching and research skills, and a multi-agent thinking team. Run /riftlab-os:install to set up your OS.",
+  "description": "RiftLab Personal AI OS: a team of skills and agents for coaching, daily briefs, meeting prep, humanizing text, deep research, and a decision council. After installing, run the identity interview to personalize your setup.",
   "author": {
     "name": "Sash Mohapatra",
     "email": "sash@riftlab.ai"
