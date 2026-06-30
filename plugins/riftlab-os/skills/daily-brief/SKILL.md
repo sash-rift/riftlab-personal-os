@@ -1,90 +1,130 @@
 ---
 name: daily-brief
-description: Generate a morning brief that gives the user a clear picture of their day in 30 seconds of reading. Pulls from their calendar, inbox, current focus, and yesterday's open threads. Adapts to the user's role. Use when the user says "daily brief", "morning brief", "what's my day", "prep me for today", or starts the day asking what's ahead.
+description: Generate a morning brief that gives a 30-second read on the day. Pulls the calendar, inbox, and open threads, then prioritizes by content signal and synthesizes across sources instead of listing them. Adapts to the user's role and current focus. Use when the user says "daily brief", "morning brief", "what's my day", "prep me for today", or starts the day asking what's ahead.
 ---
 
 # Daily Brief
 
-You produce a morning brief that gives the user a 30-second read on their day. The brief is scannable, specific, and adapts to the user's role and current focus.
+You produce a morning brief that gives the user a clear read on their day in 30 seconds. A brief is not a list. It leads with the bottom line, connects items across sources, and surfaces the one thing that would otherwise slip. The current calendar and inbox are raw material, not the output.
 
-## Identity
+Run this as a pipeline. The work that matters happens in the middle: scoring by signal (Phase 2) and synthesizing (Phase 3). Everything before is gathering, everything after is formatting.
 
-You're delivering the first thing the user reads each day. Open with one warm line (a brief good-morning, using their name), then go terse for the brief itself. The greeting is human. The content is signal.
+## Phase 0: Load the lens
 
-Match the user's voice. Pull tone from `about-me/voice.md`. Pull role context from `about-me/identity.md`. Pull priorities from `about-me/current-focus.md`. If `agent.md` gives you a name, you can sign on with it ("Nuro here. Morning, Sash.").
+Read these from the user's OS folder if they exist. They decide what counts as signal *today*:
 
-## Inputs to Gather
+- `about-me/identity.md`: the user's role. A lawyer's "time-sensitive" is a filing date; a founder's is an investor reply. Use the role to shape what you flag.
+- `about-me/current-focus.md`: active projects, what's hot this week, who's in play. This is the priority lens, and it replaces any maintained contact list.
+- `about-me/voice.md`: tone for the brief itself.
+- `agent.md`: if it gives you a name, you can sign on with it ("Nuro here. Morning, Sash.").
 
-Try these in order. Use what's available, ask for what isn't.
+If any are missing, run on general heuristics and don't block. Never make the user create a file to get a brief.
 
-1. **Today's calendar.** Check if Google Calendar (or another calendar connector) is available. If yes, fetch today's events. If no, ask the user: "Paste your calendar for today, or tell me what's on it."
-2. **Inbox priorities.** Check if Gmail (or another email connector) is available. If yes, look at unread or recent important emails. If no, ask: "Anything urgent in your inbox I should flag?"
-3. **Yesterday's open threads.** Check the user's recent conversation memory for things they were working on yesterday that may still be open. If nothing surfaces, ask: "Anything from yesterday still hanging?"
-4. **Today's priorities.** Pull from `about-me/current-focus.md`. If that file doesn't exist or feels stale, ask: "What are your top 1-3 priorities for today?"
+## Phase 1: Gather, in parallel
 
-If multiple connectors are missing, batch the asks into one short message. Don't interrogate one by one when nothing's automated.
+Pull every source at once. Each has a fixed recipe.
 
-## Output Structure
+**Calendar.** If a calendar connector is available (Google Calendar or similar), fetch today plus tomorrow morning, in the user's timezone. If not, ask once: "Paste today's calendar or tell me what's on it."
+
+**Inbox.** If an email connector is available, pull the last 24-36 hours, unfiltered for now (Phase 2 scores it). A query like `in:inbox newer_than:1d` is the starting point. If not, ask once: "Anything urgent in your inbox I should flag?"
+
+**Open threads.** What the user left hanging yesterday.
+- First try the session logs: list Claude session files modified in the last day (`~/.claude/projects/<project>/*.jsonl` on the Code CLI) and scan the last ~50 messages of each for: "let me think about that", "remind me to", "I'll do X later"; a "want me to..." offer that was never taken; TODOs created but not finished; decisions parked ("we'll come back to this").
+- If those logs aren't available on this surface, fall back to recent conversation memory, or ask: "Anything from yesterday still hanging?"
+- Cap at 3. Keep the ones most likely to matter today.
+
+**Mode.** Interactively, batch every missing-connector question into one short message; don't interrogate source by source. Headless (scheduled/cron), never ask: make a reasonable call, mark the section "none", and move on.
+
+## Phase 2: Score by signal
+
+The smart layer. Rank raw items by what's detectable in the message or event itself. No contact roster is needed or used.
+
+**Inbox, ranked high to low by these signals:**
+
+- flagged IMPORTANT or starred by the mail system
+- a real human, not bulk: a personal sender name, not a `no-reply@` / notification / marketing domain, and no `List-Unsubscribe` header (that header is a near-certain sign the message is bulk)
+- the user is in **To**, not Cc, and the recipient list is short
+- conversational state: someone replied to a thread the user started, or is directly asking the user something
+- time-sensitive content: deadline, payment or invoice, RSVP, reschedule or cancellation, "confirm by", "need this by"
+- relevance: names an active project or a person from `current-focus.md`
+
+Skip notifications, digests, marketing, and newsletters. Cap the inbox section at ~5 items. Over the cap, keep the most time-sensitive and the most relevant to today, and drop the rest silently.
+
+**Calendar, flag the pivotal events by:**
+
+- external attendees (people outside the user's org are hardest to reschedule, highest stakes)
+- 1:1 or small meetings (need prep) over large or passive ones
+- new or moved since yesterday
+- no prep buffer (back-to-back with the meeting before)
+- matches a current-focus project
+
+Annotate only the pivotal events. List the rest plainly by time and name.
+
+## Phase 3: Synthesize
+
+This is what makes it a brief. Three moves, in order.
+
+1. **Connect across sources.** For each pivotal meeting, check whether an email, thread, or open item bears on it. If so, name it in that meeting's prep note ("the redline that landed at 11pm is for this; read it first"). For each high-signal email, check whether it touches a meeting today or a current-focus project, and tie them together. The connection is the value; an isolated calendar and an isolated inbox are two lists.
+2. **Find the bottom line.** From everything gathered, state the 1-3 outcomes that define a good day, plus any overnight surprise. Write this last, place it first.
+3. **Find the slip.** The high-consequence thing with no calendar trigger and no email chasing it: the work `current-focus.md` says matters that nothing today forces. This is the single most useful thing a brief surfaces, because nothing else will.
+
+## Phase 4: Render
+
+Five sections. Each opens with a one-line topic sentence that carries the section's bottom line.
 
 ```
-# [Day], [Date]
+# [Weekday], [Month Day, Year]
 
-## Today's Shape
-[2-3 sentence narrative: what kind of day is this? Meeting-heavy? Deep work? Mixed? Use the user's voice.]
+## Bottom Line
+[One dense paragraph. The 1-3 outcomes that define a good day, plus any overnight surprise. Readable on its own in 30 seconds. This is the whole brief if the user reads nothing else.]
 
-## Calendar
-- [Time] [Meeting name] — [one-line note: prep needed, optional, etc.]
-- [Time] [Next meeting] — [...]
-[If no meetings: "No meetings. Day is yours."]
+## Time & Energy
+[Open with an assessment: "Heavy afternoon, one deep-work block this morning, and the Acme draft is due tomorrow." Then flag conflicts, back-to-backs with no prep buffer, and one time-blocking move. If the day is open, say so.]
 
-## Inbox Priorities
-- [Sender]: [Subject] — [one-line summary, suggested action if obvious]
-[If nothing urgent: "Nothing urgent. Check in after the morning block."]
+## Critical Engagements
+- [HH:MM] [Meeting]: [what it's really about, desired outcome, prep needed, and any connective tissue from Phase 3]
+- [HH:MM] [Next]: [...]
+[List non-pivotal meetings plainly underneath, or "Nothing else on the calendar."]
 
-## Today's Priorities
-1. [Priority from current-focus or asked]
-2. [...]
-3. [...]
-
-## Open Threads from Yesterday
-- [Thread + suggested action, or "None outstanding"]
+## Decision Queue
+- [The decision]. Options: [A] / [B] / [C]. Recommend [X]. Decide by [time].
+[Only items that create or resolve a decision. If none, "Nothing needs a decision today."]
 
 ## Don't Forget
-[The one thing that would slip if not flagged. Pick the most fragile commitment of the day. If nothing fragile, skip this section.]
+[The one thing that would slip. Drop this section entirely if nothing is genuinely fragile.]
 ```
 
-## Adapt to the User's Role
+Every item answers "so what?" Never name a thing without its significance. "Legal emailed about the data-sharing agreement" is a list entry. "Legal wants sign-off on a retention clause that conflicts with yesterday's privacy commitment; decide before tomorrow's partner review" is a brief.
 
-Pull the user's role from `about-me/identity.md` and adjust what you flag:
+An empty section says "None" rather than disappearing, except "Don't Forget", which is dropped when nothing is fragile. Don't manufacture urgency to fill it.
 
-- **Lawyer / counsel**: surface case deadlines, filing dates, depositions, calls with opposing counsel, judge time.
-- **Product manager**: surface standups, sprint commitments, customer interviews, blocker risks.
-- **Marketer**: surface campaign launches, content deadlines, channel reviews, partner calls.
-- **Sales / BD**: surface pipeline meetings, demos, follow-ups with prospects who've gone quiet.
-- **Executive / founder**: surface board prep, investor touchpoints, 1:1s with reports, external stakeholder calls.
-- **Educator / advisor**: surface session prep, student check-ins, content delivery deadlines.
-- **Researcher / analyst**: surface report deadlines, data review windows, peer discussion windows.
-- **Any role**: external commitments (calls with people outside the org) are hardest to reschedule — flag them.
+## Adapt to the user's role
 
-If the user's role isn't covered above, infer from `identity.md` what kind of work is high-stakes for them and flag accordingly.
+Pull the role from `identity.md` and shape what you flag:
 
-## Voice Rules
+- **Lawyer / counsel:** filing dates, deadlines, depositions, opposing-counsel calls, anything on the record.
+- **Product manager:** standups, sprint commitments, customer interviews, blocker risks.
+- **Sales / BD:** pipeline meetings, demos, follow-ups with prospects who have gone quiet.
+- **Executive / founder:** board prep, investor touchpoints, 1:1s with reports, external stakeholder calls.
+- **Marketer:** campaign launches, content deadlines, channel reviews, partner calls.
+- **Educator / advisor:** session prep, student check-ins, delivery deadlines.
+- **Researcher / analyst:** report deadlines, data-review windows, peer discussion.
 
-- **Open with a brief warm greeting.** This is the first interaction of the day. One short line: "Good morning, [name]." or "Morning, [name] — here's how today's shaping up." Use their preferred address from `about-me/identity.md`. If you have an agent name from `agent.md`, you can sign on briefly ("Nuro here. Morning, Sash."). Keep it to one line. Then move into the brief.
-- After the greeting, no filler. Don't say "Here's what's on your plate." Just put the plate down.
-- Match `voice.md`. If the user banned em dashes, don't use them. If they prefer terse, be terse.
-- Use the user's own words for projects when you have them (don't translate "Project Eagle" to "the platform initiative").
+If the role isn't listed, infer from `identity.md` what is high-stakes for this person and flag accordingly. Across every role, external commitments are the hardest to reschedule; weight them up.
 
-## When to Skip a Section
+## Voice
 
-- If there's nothing in a section, write "None" rather than dropping the heading. Consistency helps scanning.
-- If "Don't Forget" has nothing genuinely fragile, drop it. Don't manufacture urgency.
+- Open with one warm line that uses the user's name ("Morning, Sash."). The greeting is the only human flourish; the brief itself is terse.
+- After the greeting, no filler. Don't say "Here's what's on your plate." Put the plate down.
+- Match `voice.md`. No em dashes. If the user prefers terse, be terse.
+- Use the user's own words for projects ("Project Eagle", not "the platform initiative").
 
-## Self-Review Before Delivering
+## Self-review before delivering
 
-1. Did I open with one warm line that uses their name? (Greeting goes here, only here.)
-2. Can the rest of the brief be read in 30 seconds? If not, cut.
-3. Did I include anything Claude could have figured out without asking? If yes, cut.
-4. Did I match their voice for the brief itself (terse, no filler)?
-5. Did I flag the one thing they'd be mad to miss?
-6. Any em dashes? Replace.
+1. Did I synthesize, or just list? If two sources never connect, I listed.
+2. Is the Bottom Line the actual bottom line, or just the first thing I found?
+3. Does every item answer "so what?"
+4. Can the whole brief be read in 30 seconds? If not, cut.
+5. Did I respect the caps (inbox ~5, open threads 3) and annotate only pivotal meetings?
+6. Did I flag the one thing they'd be angry to miss?
+7. Any em dashes? Replace.
