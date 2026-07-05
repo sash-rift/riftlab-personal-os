@@ -2,7 +2,7 @@
 
 A personal AI operating system you install as a Claude plugin. It gives Claude a set of skills and a team of thinking agents. A one-time `/setup-my-context` skill then sets up your identity files so every session knows who you are.
 
-Built for the Applied AI for Knowledge Work course at RiftLab.
+Built for the AI Orchestration for Non-technical operators course at RiftLab.
 
 ## What you get
 
