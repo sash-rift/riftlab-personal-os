@@ -42,6 +42,7 @@ Each component is grounded in established management science or analytic tradecr
 | **Why a board beats one mind** | Diversity Prediction Theorem | Scott Page, *The Difference*, 2007 | Collective error = average individual error − predictive diversity. Independent diverse lenses are mathematically more accurate; when diversity collapses, the wisdom evaporates. |
 | **How the board runs** | Multiple Advocacy | Alexander George, APSR 1972 | Structured, balanced debate among advocates from different functions; the leader synthesizes. Built to avoid both groupthink and destructive conflict. |
 | **Each advisor's rigor** | Key Assumptions Check + Red Team (SAT) + Premortem | Heuer & Pherson 2010; Klein, HBR 2007 | Each advisor stress-tests its own position in its own domain. |
+| **When the board agrees** | Dialectical Inquiry / Devil's Advocacy | Mason & Mitroff 1981; Schwenk 1990 | Structured dissent against a forming consensus catches shared error that per-advisor checks miss. Convened conditionally, only on convergence. |
 | **The quality bar** | Decision Quality (6 elements) | Spetzler / Howard, Stanford SDG | Rubric the final recommendation must satisfy. |
 | **Who owns it** | RAPID / DACI | Bain; Atlassian | Decision rights, accountable owner, next action. |
 
@@ -60,17 +61,17 @@ Four functional lenses chosen to cover the tension axes of almost any business d
 | **COO** (feasibility) | Capacity, delivery quality, support load, execution risk | Theory of Constraints / bottlenecks; execution premortem | *We can't deliver this well right now.* |
 | **GC** (permissibility & risk) | Legal, regulatory, contractual, liability, compliance, IP | Risk classification (likelihood × severity); precedent | *Here's what has to be true — and the conditions to proceed.* |
 
-The adversarial function is **distributed**: each advisor runs a Key Assumptions Check and a domain premortem on its own position. That removes the need for a separate Challenge agent — one fewer seat, by our own minimum-agents discipline.
+The adversarial function is **distributed**: each advisor runs a Key Assumptions Check and a domain premortem on its own position. That covers per-lens rigor without a standing Challenge seat. But distributed self-critique cannot catch a blind spot *shared across every lens* — when the board converges, each advisor's internal check passes and the group is still wrong together. So a **challenger** is convened **conditionally** (Phase 3.5): not as a fixed stage in a dependent chain (the design we rejected below), but as a red-team spawned only when the board agrees, to test whether the agreement is real. One more seat, and only when convergence earns it — the minimum-agents discipline holds.
 
 ---
 
 ## Architecture
 
 ```
-Phase 0          Phase 1        Phase 2        Phase 3              Phase 4         Phase 5
-Intake     →     Gate      →    Frame     →    Convene board   →   Synthesis  →    Log + QA
-(Direct)         (Direct)       (Direct)       (Advisors ×N,        (CEO /          (Direct)
-                                               PARALLEL)            Direct, Opus)
+Phase 0        Phase 1      Phase 2      Phase 3            Phase 3.5          Phase 4        Phase 5
+Intake    →    Gate    →    Frame   →    Convene board  →   Challenge      →   Synthesis  →   Log + QA
+(Direct)       (Direct)     (Direct)     (Advisors ×N,      (Challenger,        (CEO /         (Direct)
+                                          PARALLEL)          CONDITIONAL)        Direct, Opus)
 ```
 
 - **The skill owns** intake, the gate, the shared decision brief, convening, synthesis, and the log.
@@ -87,7 +88,8 @@ Decisions/[decision-slug]/
 │   ├── cmo.md
 │   ├── cfo.md
 │   ├── coo.md
-│   └── gc.md
+│   ├── gc.md
+│   └── challenger.md                # Phase 3.5: only if the board converges
 └── [YYYY-MM-DD]-[slug]-decision.md  # Phase 4: the Decision Council Brief + log
 ```
 
@@ -219,12 +221,27 @@ Each advisor receives: the standard context block + `_brief.md` + its own lens i
 
 ---
 
+## Phase 3.5 — Dialectical Challenge (conditional)
+
+**Actor:** Orchestrator reads the positions; if the board converged, spawns one challenger agent.
+
+The four advisors self-critique inside their own lens. None of them can see the error the whole board shares — the assumption every lens took for granted, the risk each thought another owned. Page's theorem says the council's accuracy comes from diversity; when the positions converge, that diversity has collapsed and the safeguard is gone. This phase restores it.
+
+**Trigger:** three or more seated advisors land on the same path, or the positions differ only in detail, not direction. If the board is genuinely split, skip it — the tension is already there.
+
+**The challenger is not a lens and not a standing seat.** It is a red-team, convened only on convergence. It is the one agent handed the board's positions on purpose, because its job is to attack them: steelman the strongest rejected option, name the load-bearing shared assumption and show what breaks if it is false, and surface the blind spot no lens owned. It does not decide. It hands the CEO a sharper set of odds.
+
+This is why the conditional design matters: a *fixed* Challenge stage in every run was the dependent-chain council we rejected (Context → Options → Challenge → Decision). Firing it only when the board agrees keeps the fan-out architecture and the minimum-agents discipline while closing the one gap distributed self-critique cannot.
+
+---
+
 ## Phase 4 — Synthesis (the CEO)
 
 **Actor:** Orchestrator / human (top-tier model). Not a peer agent.
 
 1. **Multiple Advocacy** — lay the competing positions out fairly. Identify where advisors agree and where they conflict. Name the real tension.
-2. **Resolve, don't list** — make the call. Mushy "consider exploring" language is a failure. Say what to do, why, what tradeoff is being accepted, and what risk remains.
+2. **Weigh the challenge (if convened)** — read the challenger's memo. A consensus that survives an honest steelman is genuine corroboration; one that folds when its shared assumption is attacked was manufactured. If the challenge lands, change the call or attach the conditions it exposed.
+3. **Resolve, don't list** — make the call. Mushy "consider exploring" language is a failure. Say what to do, why, what tradeoff is being accepted, and what risk remains.
 3. **Decision Quality check** — verify the recommendation satisfies the six elements (frame, alternatives, information, values, reasoning, commitment).
 4. **RAPID / DACI** — assign owner, accountable executor, who's informed, and the next action with a deadline.
 
@@ -335,3 +352,4 @@ This is scoped research, not Deep Research. Default to a targeted scan.
 - Decision Quality — Spetzler, Winter & Meyer; Stanford Strategic Decisions Group
 - RAPID — Bain & Company; DACI — Atlassian
 - Premortem — Klein, *Performing a Project Premortem*, HBR 2007
+- Dialectical Inquiry & Devil's Advocacy — Mason & Mitroff, *Challenging Strategic Planning Assumptions*, 1981; Schwenk, *Effects of Devil's Advocacy and Dialectical Inquiry on Decision Making*, 1990

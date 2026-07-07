@@ -26,7 +26,7 @@ Four custom agents provided by the `riftlab-os` plugin, spawned by their plugin-
 | **coo-advisor** | Capacity, delivery quality, support load, execution | We must deliver this well | Sonnet |
 | **gc-advisor** | Legal, regulatory, contractual, liability, IP | Here's what must be true, and the conditions | Sonnet |
 
-Each advisor distributes the adversarial function internally — it runs a Key Assumptions Check and a domain premortem on its own position. There is **no separate Challenge agent**.
+Each advisor distributes the adversarial function internally — it runs a Key Assumptions Check and a domain premortem on its own position. That covers per-lens rigor. It does **not** catch a blind spot shared across every lens, so a separate **challenger** (`riftlab-os:challenger-advisor`) is convened in Phase 3.5 — but only when the board converges, never by default. It is a conditional red-team, not a standing seat.
 
 ---
 
@@ -55,13 +55,15 @@ YOUR JOB:
 ## Orchestration Flow
 
 ```
-Phase 0       Phase 1      Phase 2      Phase 3              Phase 4         Phase 5
-Intake   →    Gate    →    Frame   →    Convene board   →   Synthesis  →    Log + QA
-(Direct)      (Direct)     (Direct)     (Advisors ×N,        (Direct,        (Direct)
-                                        PARALLEL)            top-tier model)
+Phase 0     Phase 1    Phase 2    Phase 3           Phase 3.5           Phase 4       Phase 5
+Intake  →   Gate   →   Frame  →   Convene board →   Challenge       →   Synthesis →   Log + QA
+(Direct)    (Direct)   (Direct)   (Advisors ×N,     (Challenger,         (Direct,      (Direct)
+                                   PARALLEL)         CONDITIONAL —        top-tier)
+                                                     only if the board
+                                                     converges)
 ```
 
-The skill (you, the orchestrator) runs Phases 0–2, 4, 5 directly. Only Phase 3 spawns agents.
+The skill (you, the orchestrator) runs Phases 0–2, 4, 5 directly. Phase 3 spawns the advisor agents; Phase 3.5 conditionally spawns the challenger.
 
 ---
 
@@ -73,6 +75,7 @@ Decisions/[slug]/
 ├── _brief.md                        # Phase 2 (handoff contract)
 ├── _positions/                      # Phase 3 (one per seated advisor)
 │   ├── cmo.md  cfo.md  coo.md  gc.md
+│   └── challenger.md                # Phase 3.5 (only if the board converges)
 └── [YYYY-MM-DD]-[slug]-decision.md  # Phase 4 (the brief + log)
 ```
 
@@ -212,12 +215,49 @@ Wait for all seated advisors to finish before synthesizing.
 
 ---
 
+## Phase 3.5 — Dialectical Challenge (conditional)
+
+**Actor:** You, direct, read the positions first. Then, only if the trigger fires, spawn the challenger agent.
+
+Distributed self-critique catches per-lens error. It cannot catch a blind spot shared across every lens: when the board converges, each advisor's internal check passes and the group can still be wrong together. This phase tests whether the agreement is real.
+
+### The trigger
+
+After the board returns, check for convergence. Convene the challenger when **either** is true:
+
+- Three or more seated advisors recommend the same option or path (with two or three seats, all of them agree).
+- No genuine conflict surfaced: the positions differ in detail but not in direction.
+
+If the board already splits into real conflict, **skip this phase.** You have the tension you need; go to synthesis. The challenger earns its spawn by convergence, not by default. This preserves the minimum-agents discipline: one more seat only when the decision's agreement needs testing.
+
+### The invocation
+
+Spawn `riftlab-os:challenger-advisor` with this block. Unlike the advisors, it is given the board's positions on purpose.
+
+```
+CHALLENGE CONTEXT:
+- Current date: [YYYY-MM-DD]
+- Decision slug: [slug]
+- Brief: Decisions/[slug]/_brief.md
+- Board positions: Decisions/[slug]/_positions/*.md
+- The consensus: [one line — what the board converged on]
+
+YOUR JOB:
+- You ARE shown the board's positions. Red-team the consensus.
+- Steelman the strongest rejected option, attack the shared load-bearing assumption, name the blind spot no lens owned.
+- Do not make the final call. Write to Decisions/[slug]/_positions/challenger.md
+```
+
+Wait for the challenger to finish, then synthesize.
+
+---
+
 ## Phase 4 — Synthesis (the CEO)
 
 **Actor:** You, direct, on the top-tier model. **Not a peer agent.**
 
 1. **Multiple Advocacy** — read all positions. Lay out the competing advocacies fairly. Name where they agree and where they genuinely conflict.
-2. **Consensus check — is the agreement real?** When the board is unanimous, do NOT report unanimity as a strong signal until you rule out the brief. Ask: *could every advisor have reached this from the brief alone, regardless of lens?* If the brief named the winning option, pre-loaded a verdict, or told them what to scrutinize, the consensus is likely **manufactured** — a mirror, not corroboration. Say so plainly in the synthesis and down-weight it. Genuine independent convergence (advisors reaching the same place from *different* reasons, on facts the brief left neutral) is gold; flag which kind you actually have.
+2. **Weigh the challenge — is the agreement real?** If Phase 3.5 ran, read the challenger's memo and ask whether the consensus survives it. A convergence that withstands an honest steelman is genuine corroboration; one that folds when its shared assumption is attacked was **manufactured** — a mirror, not four independent lenses. State plainly which you have. If the challenge lands, change the call or attach the conditions it exposed. Also run the brief check: *could every advisor have reached this from the brief alone, regardless of lens?* If the brief named the winning option or pre-loaded a verdict, down-weight the agreement. Genuine independent convergence (advisors reaching the same place from *different* reasons, on facts the brief left neutral, and surviving the challenger) is gold; flag which kind you actually have.
 3. **Resolve, don't list** — make the call. Say what to do, why, what tradeoff is being accepted, and what risk remains. Ban mushy "consider exploring" language.
 4. **Decision Quality** — verify the recommendation satisfies all six elements: frame, alternatives, information, values, reasoning, commitment.
 5. **RAPID / DACI** — assign owner, accountable executor, who's informed, and the next action with a deadline.
@@ -242,6 +282,7 @@ Write the Decision Council Brief (template below) to `Decisions/[slug]/[YYYY-MM-
 - [ ] The gate passed before any agent was convened
 - [ ] Each seated advisor had a genuinely conflicting lens
 - [ ] Advisors worked in isolation
+- [ ] If the board converged, the challenger was convened and its memo weighed
 - [ ] Synthesis resolved tensions rather than listing them
 - [ ] Output supports the human as decision-maker
 
@@ -287,6 +328,9 @@ Scoped research, not Deep Research. Default to a targeted scan.
 ## Where the board conflicted
 <the real tension, and how it was resolved>
 
+## The challenge (if convened)
+<what the challenger attacked, and whether the consensus survived>
+
 ## Key risks
 - Risk: <risk> — Mitigation: <mitigation>
 - Risk: <risk> — Mitigation: <mitigation>
@@ -309,5 +353,6 @@ Scoped research, not Deep Research. Default to a targeted scan.
 - [ ] Only conflicting lenses seated; cast and reason announced
 - [ ] Brief separated facts from assumptions
 - [ ] Advisors ran in parallel, in isolation
+- [ ] If the board converged, the challenger red-teamed the consensus before synthesis
 - [ ] Synthesis made a clear call with an owner and next action
 - [ ] Decision Council Brief + log saved to `Decisions/[slug]/`
