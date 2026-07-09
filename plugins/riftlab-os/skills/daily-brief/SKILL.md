@@ -16,7 +16,7 @@ Read these from the user's OS folder if they exist. They decide what counts as s
 - `about-me/identity.md`: the user's role. A lawyer's "time-sensitive" is a filing date; a founder's is an investor reply. Use the role to shape what you flag.
 - `about-me/current-focus.md`: active projects, what's hot this week, who's in play. This is the priority lens, and it replaces any maintained contact list.
 - `about-me/voice.md`: tone for the brief itself.
-- `agent.md`: if it gives you a name, you can sign on with it ("Nuro here. Morning, Sash.").
+- `agent.md`: if it gives you a name, you can sign on with it ("[agent name] here. Morning, [user's name].").
 
 If any are missing, run on general heuristics and don't block. Never make the user create a file to get a brief.
 
@@ -99,7 +99,7 @@ An empty section says "None" rather than disappearing, except "Don't Forget", wh
 
 ## Voice
 
-- Open with one warm line that uses the user's name ("Morning, Sash."). The greeting is the only human flourish; the brief itself is terse.
+- Open with one warm line that uses the user's name ("Morning, [name]."). The greeting is the only human flourish; the brief itself is terse.
 - After the greeting, no filler. Don't say "Here's what's on your plate." Put the plate down.
 - Match `voice.md`. No em dashes. If the user prefers terse, be terse.
 - Use the user's own words for projects ("Project Eagle", not "the platform initiative").
