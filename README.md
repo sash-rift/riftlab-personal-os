@@ -4,6 +4,8 @@ A personal AI operating system you install as a Claude plugin. It gives Claude a
 
 Built for the AI Orchestration for Non-technical operators course at RiftLab.
 
+![RiftLab Personal AI OS architecture](assets/architecture.svg)
+
 ## What you get
 
 **Skills** (type `/` to run one, or let Claude reach for it):
@@ -48,3 +50,14 @@ The plugin gives Claude capabilities. This step gives Claude *you*. After instal
 ## Where things run
 
 The four light skills (`/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`) run everywhere, including Cowork. `/deep-research` and `/decision-council` run a live agent team. Use the Code tab or the CLI for those two.
+
+## License
+
+MIT. Open for anyone to install, use, and adapt.
+
+## Built by
+
+Sash Mohapatra. I build and teach AI-native work at RiftLab. This plugin runs the way I actually work: Claude in the terminal, directing a set of skills and a team of agents.
+
+- RiftLab: https://riftlab.ai
+- What I build: https://buildwithsash.com
