@@ -49,7 +49,9 @@ Internal first: the brief and all position files. External, light: a targeted sc
 
 ## Output Format
 
-Save to `Decisions/[slug]/_positions/challenger.md`:
+Save to the exact path given as `WRITE PATH` in your context block. Copy it verbatim.
+Do not build the path from the decision wording, and do not create a sibling folder if
+the one you were given looks wrong. The folder already exists.
 
 ```markdown
 # Challenger Position — [slug]
@@ -81,4 +83,5 @@ Save to `Decisions/[slug]/_positions/challenger.md`:
 - [ ] Surfaced the blind spot no lens owned
 - [ ] Gave an honest verdict on whether the consensus survives
 - [ ] Did not make the final decision
-- [ ] Saved to `_positions/challenger.md`
+- [ ] Saved to the `WRITE PATH` from the context block, character for character
+- [ ] Did not invent or alter the decision folder name

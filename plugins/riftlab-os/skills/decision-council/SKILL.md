@@ -32,7 +32,7 @@ Each advisor distributes the adversarial function internally — it runs a Key A
 
 ## Standard Context Block
 
-Every advisor invocation must include this block:
+Every advisor invocation must include this block. **Substitute every `[slug]` with the real slug before sending.** An advisor that receives a literal `[slug]` will invent one from the decision text, and its position lands in a folder nobody reads.
 
 ```
 DECISION CONTEXT:
@@ -47,7 +47,13 @@ YOUR JOB:
 - Evaluate ONLY through your lens. Argue it honestly.
 - Work in isolation. You do not see other advisors' positions.
 - Run a Key Assumptions Check and a premortem before finishing.
-- Write your position to Decisions/[slug]/_positions/[seat].md
+
+WRITE PATH (copy verbatim, do not construct):
+Decisions/[slug]/_positions/[seat].md
+
+The folder already exists. Write to that exact path. Do not derive a folder
+name from the decision wording, and do not create a sibling folder. If the
+path looks wrong to you, still use it and say so in your position.
 ```
 
 ---
@@ -204,7 +210,9 @@ If you would not be comfortable handing the same brief to an advisor briefed to 
 
 **Actor:** The seated advisor agents. **Spawn them in a single parallel batch.**
 
-For each seated advisor, invoke its agent by its plugin-scoped name (`riftlab-os:cmo-advisor`, `riftlab-os:cfo-advisor`, `riftlab-os:coo-advisor`, `riftlab-os:gc-advisor`) with the standard context block. They run concurrently and write to `_positions/[seat].md`.
+**Before spawning anything, create the positions folder:** `mkdir -p Decisions/[slug]/_positions`. Advisors write, they do not scaffold, and an agent that finds no folder is an agent that guesses at one.
+
+For each seated advisor, invoke its agent by its plugin-scoped name (`riftlab-os:cmo-advisor`, `riftlab-os:cfo-advisor`, `riftlab-os:coo-advisor`, `riftlab-os:gc-advisor`) with the standard context block, **its `WRITE PATH` fully substituted with the real slug and seat**. They run concurrently.
 
 **Non-negotiables:**
 - **Parallel** — independent lenses have no dependency; do not serialize them.
@@ -212,6 +220,8 @@ For each seated advisor, invoke its agent by its plugin-scoped name (`riftlab-os
 - **Scoped research** — internal files first, light external scan only where the lens needs outside facts. This is not Deep Research (see Research Rules).
 
 Wait for all seated advisors to finish before synthesizing.
+
+**Then verify the board actually landed.** Count the files in `Decisions/[slug]/_positions/` against the seats you convened. If one is missing, check `Decisions/` for a stray sibling folder with a near-identical slug: that is a misfiled position, not a duplicate. Move it into the run and continue. Never synthesize around a missing lens, and never delete the stray folder. Synthesis will cite a seat whether or not its file is where it belongs, so the decision doc reads as complete even when the board was short a lens. This check is the only thing that catches it.
 
 ---
 
@@ -232,7 +242,7 @@ If the board already splits into real conflict, **skip this phase.** You have th
 
 ### The invocation
 
-Spawn `riftlab-os:challenger-advisor` with this block. Unlike the advisors, it is given the board's positions on purpose.
+Spawn `riftlab-os:challenger-advisor` with this block. Unlike the advisors, it is given the board's positions on purpose. **Substitute every `[slug]` before sending**, same rule as the advisors.
 
 ```
 CHALLENGE CONTEXT:
@@ -245,7 +255,10 @@ CHALLENGE CONTEXT:
 YOUR JOB:
 - You ARE shown the board's positions. Red-team the consensus.
 - Steelman the strongest rejected option, attack the shared load-bearing assumption, name the blind spot no lens owned.
-- Do not make the final call. Write to Decisions/[slug]/_positions/challenger.md
+- Do not make the final call.
+
+WRITE PATH (copy verbatim, do not construct):
+Decisions/[slug]/_positions/challenger.md
 ```
 
 Wait for the challenger to finish, then synthesize.

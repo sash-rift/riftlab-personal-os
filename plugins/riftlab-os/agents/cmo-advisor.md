@@ -52,7 +52,9 @@ External, light: a targeted scan for competitive moves, demand signals, or timin
 
 ## Output Format
 
-Save to `Decisions/[slug]/_positions/cmo.md`:
+Save to the exact path given as `WRITE PATH` in your context block. Copy it verbatim.
+Do not build the path from the decision wording, and do not create a sibling folder if
+the one you were given looks wrong. The folder already exists.
 
 ```markdown
 # CMO Position — [slug]
@@ -82,4 +84,5 @@ Save to `Decisions/[slug]/_positions/cmo.md`:
 - [ ] Key Assumptions Check and premortem completed
 - [ ] Stayed in lens; out-of-lens issues flagged, not analyzed
 - [ ] Did not reference other advisors' views
-- [ ] Saved to `_positions/cmo.md`
+- [ ] Saved to the `WRITE PATH` from the context block, character for character
+- [ ] Did not invent or alter the decision folder name
