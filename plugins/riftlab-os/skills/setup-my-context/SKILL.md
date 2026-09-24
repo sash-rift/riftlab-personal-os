@@ -1,11 +1,11 @@
 ---
 name: setup-my-context
-description: One-time setup for the Personal AI OS. Discovers context the user already has (their CLAUDE.md files, Claude user memory, auto memory, older setups), interviews them to fill the gaps, then writes one organized context system into the folder they're working in, so every session knows who they are and how they work. Nothing they already set up is lost. Use right after installing the plugin, or when the user says "help me set up my context", "set up my personal OS", "onboard me", "run the RiftLab OS setup", or "personalize my AI".
+description: One-time setup for the Personal AI OS. Discovers context the user already has (their CLAUDE.md files, Claude user memory, auto memory, older setups), interviews them to fill the gaps, then writes one organized context system into the folder they're working in, plus paste-ready text for Instructions for Claude, the Claude app setting that carries across every chat and Cowork task, so every session knows who they are and how they work. Nothing they already set up is lost. Use right after installing the plugin, or when the user says "help me set up my context", "set up my personal OS", "onboard me", "run the RiftLab OS setup", or "personalize my AI".
 ---
 
 # Set up the Personal AI OS
 
-This is the one-time personalization for the Personal AI OS. The plugin already installed the skills and agents. This runs discovery on what the user already has, a short interview to fill the gaps, then writes an organized context system into the folder they're working in. It is self-contained: generate everything from what you find and their answers, there is nothing to download.
+This is the one-time personalization for the Personal AI OS. The plugin already installed the skills and agents. This runs discovery on what the user already has, a short interview to fill the gaps, then writes an organized context system into the folder they're working in, and last builds the text for their Instructions for Claude setting. It is self-contained: generate everything from what you find and their answers, there is nothing to download.
 
 Two rules hold the whole thing together. Keep them in mind at every step.
 
@@ -31,6 +31,7 @@ Most people already have context, even if they never wrote a setup file. Before 
 - **The home folder and the folders above it** for `CLAUDE.md` and `CLAUDE.local.md`.
 - **Their Claude user memory:** `~/.claude/CLAUDE.md`. In Claude Code this loads in every session, so it's a likely place real identity already lives. (You are reading it to harvest what's true, not to write there.)
 - **Their auto memory:** `~/.claude/projects/*/memory/MEMORY.md` and the topic files beside it. This is what Claude has been learning about them over time.
+- **Instructions already in the Claude app.** You can't read their Settings, so ask: "Have you written anything into Instructions for Claude in the Claude app's Settings? If so, paste it here and I'll keep what's still true." Treat what they paste like any other source.
 - **Anything they name.** Ask: "Do you already have an AI setup, a CLAUDE.md, or a note on how you work somewhere? Point me at it and I'll fold in what's still true." Read a bio or resume if they offer one.
 
 Only read in this step; write nothing yet. If they decline, skip the scan, tell them you'll build from the interview alone, and continue.
@@ -95,16 +96,36 @@ If answer 7 surfaced specific tools, write a short file listing them and what ea
 
 Also create `references/` and `projects/` as folders (each with a `.gitkeep`) for the user to grow into.
 
-**Never lose data (applies to every file above).** Before writing any file that already exists with real content the user wrote: read it, keep everything, add only what's missing, show a short summary of what you'll add and what you'll leave untouched, back it up (`.backup` and today's date), and write only after they confirm. A file that's empty or placeholder scaffold you write directly. The folders (`about-me/`, `rules/`, `references/`, `projects/`) are additive: create what's missing, never disturb what's inside. After writing each file, confirm it exists at the target path before moving on.
+**Never lose data (applies to every file above).** Before writing any file that already exists with real content the user wrote: read it, keep everything, add only what's missing, show a short summary of what you'll add and what you'll leave untouched, back it up (`.backup` and today's date), and write only after they confirm. A file that's empty or placeholder scaffold you write directly. The folders (`about-me/`, `rules/`, `references/`, `projects/`, `settings/`) are additive: create what's missing, never disturb what's inside. After writing each file, confirm it exists at the target path before moving on.
 
-## Step 6: Orient and hand off
+## Step 6: Build their Instructions for Claude
+
+The folder holds the full system, but Claude only reads it when they work inside it. Instructions for Claude, a setting in the Claude app, carries a short version into every chat and every Cowork task on their account, including ones with no folder connected. You can't change Settings yourself, so build the text here, save it as `settings/instructions-for-claude.md`, and tell the user where to paste it.
+
+It has to stand on its own, so it can't depend on files. Build it from `about-me/identity.md`, `about-me/voice.md`, `agent.md`, and `rules/communication.md`, compressed to what matters in every conversation:
+- Who they are: name, role and company, and what they do, in one or two sentences.
+- What they mostly use Claude for.
+- Their AI: its name and the role it plays with them, one line. Skip it if they kept "Claude".
+- Voice: the three or four rules that matter most, in their words.
+- How to respond: lead with the answer, the length they like, when to use structure.
+- How to work on tasks: when their OS folder (`<OS_PATH>`) is connected, read `CLAUDE.md` there first and save finished work into it; ask before sending, posting, or deleting anything on their behalf; plus any work habit they named in the interview.
+
+Keep it under 250 words. Leave out current focus; it changes weekly and belongs in the folder.
+
+Write it in the first person, in plain sentences, the way they'd type it themselves. No Markdown headers or formatting: the settings box shows plain text. If they pasted existing instructions in Step 2, save that text first as `settings/instructions-for-claude.backup-<date>.md`, then merge: keep everything still true, add what's missing, and tell them what changed.
+
+Show the text in full in the conversation, then tell them where it goes: open Settings in the Claude app and find the box called Instructions for Claude (it has moved between pages as the app changes; at the time of writing it sits under Account). Paste the text in, replacing what's there, since the merged text already keeps what was true. If they can't find the box, don't guess at menus; tell them to search the Settings pages for "Instructions for Claude".
+
+Wait for them to say they've pasted it before moving on. If they'd rather do it later, tell them the text is saved in `settings/`.
+
+## Step 7: Orient and hand off
 
 When the files are written, brief the user in their own voice:
 
 - **Where it lives.** Their OS is at `<OS_PATH>`; they can open and edit any file in Finder or File Explorer anytime. Editing any file changes how Claude shows up next session.
 - **The home-folder rule.** In Claude Code, launch from inside this folder and `CLAUDE.md` loads automatically. In Cowork, connect this folder (or make it your Cowork project) and it becomes your folder instructions. Work somewhere else and Claude won't know them. This folder is the AI's home.
 - **Keep it fresh.** `about-me/current-focus.md` is the one to update most. Once a month, read your context and cut any line that wouldn't cause a mistake if it were gone.
-- **Optional, for Cowork power users.** To carry a short version of who they are across every Cowork project, not just this folder, they can paste a few lines into Settings > Cowork > Global instructions. This is a manual step; the folder is still the home for the full system.
+- **Instructions for Claude.** This setting carries a short version of them into every conversation, even outside this folder. The app doesn't read the folder to refresh it, so when their role or voice changes, update `settings/instructions-for-claude.md` and paste it again.
 - **Their skills.** Already in the `/` menu, installed by the plugin: `/aim-coach`, `/daily-brief`, `/meeting-prep`, `/humanize`, plus `/deep-research` and `/decision-council`, which run a live agent team in the Code tab or CLI. Suggest starting with `/aim-coach` on any prompt, or `/humanize` on any draft that reads as AI-written.
 
 End with a single line on what to do next. No congratulations padding, and no "Great answer!" along the way.
